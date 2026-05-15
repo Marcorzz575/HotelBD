@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Reservaciones - Bhaccasyoniztas</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+    <link rel="stylesheet" href="css/estilo.css" type="text/css">
+
+    <style>
+        .form-reserva label {
+            display: block;
+            margin: 10px 0 4px;
+            font-weight: 600;
+        }
+
+        .form-reserva input,
+        .form-reserva select,
+        .form-reserva button {
+            display: block !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: none !important;
+            pointer-events: auto !important;
+            position: relative !important;
+            z-index: 2 !important;
+            transition: none !important;
+        }
+
+        .body,
+        #contents,
+        .box {
+            position: relative;
+            z-index: 1;
+        }
+
+        .lista-reservas {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        .lista-reservas li {
+            background: #f7f7f7;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+        }
+
+        .btn-eliminar {
+            background-color: #c62828;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            margin-top: 8px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .btn-eliminar:hover {
+            background-color: #b71c1c;
+        }
+
+        .mensaje {
+            color: green;
+            font-weight: 600;
+            margin-top: 10px;
+            display: block;
+        }
+
+        @media (min-width:600px) {
+
+            .form-reserva input,
+            .form-reserva select,
+            .form-reserva button {
+                max-width: 480px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="background">
+        <div id="page">
+            <div id="header">
+                <div id="logo">
+                    <a href="index.html"><img src="images/LogoFinal.png" alt="LOGO" height="112" width="118"></a>
+                </div>
+                <div id="navigation">
+                    <ul>
+                        <li><a href="index.html">INICIO</a></li>
+                        <li><a href="about.html">SERVICIO</a></li>
+                        <li><a href="habitaciones.html">HABITACIONES</a></li>
+                        <li><a href="foods.html">RESERVACIONES</a></li>
+                        <li><a href="contact.html">CONTACTO</a></li>
+                        <li><a href="admin.html">RECEPCIÓN</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="contents">
+                <div class="box">
+                    <div>
+                        <div class="body">
+                            <h1>RESERVACIONES</h1>
+                            <form action="guardar_reserva.php" method="POST" class="form-reserva" id="formReserva"
+                                autocomplete="off" novalidate>
+                                <label for="nombre">Nombre completo:</label>
+                                <input type="text" id="nombre" name="nombre" required placeholder="Ej. Juan Pérez">
+
+                                <label for="correo">Correo electrónico:</label>
+                                <input type="email" id="correo" name="correo" required
+                                    placeholder="Ej. ejemplo@gmail.com" autocomplete="email">
+
+                                <label for="fechaEntrada">Fecha de llegada:</label>
+                                <input type="date" id="fechaEntrada" name="entrada" required>
+
+                                <label for="fechaSalida">Fecha de salida:</label>
+                                <input type="date" id="fechaSalida" name="salida" required>
+
+                                <label for="huespedes">Número de huéspedes:</label>
+                                <input type="number" id="huespedes" name="huespedes" min="1" max="10" value="1"
+                                    required>
+
+                                <label for="habitacion">Tipo de habitación (Sujeto a disponibilidad):</label>
+                                <select id="habitacion" name="habitacion" required>
+                                    <option value="">Seleccione...</option>
+                                    <option value="Estandar">Estándar - $1,500 MXN / noche</option>
+                                    <option value="Premium">Premium - $2,500 MXN / noche</option>
+                                    <option value="Ejecutiva">Ejecutiva - $4,000 MXN / noche</option>
+                                </select>
+
+                                <button type="submit">Reservar ahora</button>
+
+                                <p id="mensaje" class="mensaje" aria-live="polite"></p>
+                            </form>
+
+                            <h2>Reservaciones guardadas</h2>
+                            <ul id="listaReservas" class="lista-reservas" aria-live="polite"></ul>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="footer">
+            <div>
+                <ul class="navigation">
+                    <li class="active"><a href="index.html">INICIO</a></li>
+                    <li><a href="about.html">SERVICIOS</a></li>
+                    <li><a href="habitaciones.html">HABITACIONES</a></li>
+                    <li class="active"><a href="foods.html">RESERVACIONES</a></li>
+                    <li><a href="contact.html">CONTACTO</a></li>
+                </ul>
+            </div>
+            <p>© 2025 Derechos reservados.</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const form = document.getElementById("formReserva");
+            const lista = document.getElementById("listaReservas");
+            const mensaje = document.getElementById("mensaje");
+
+            function mostrarMensaje(texto, tiempo = 2500) {
+                mensaje.textContent = texto;
+                setTimeout(() => mensaje.textContent = "", tiempo);
+            }
+
+            cargarReservas();
+
+            form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+
+                const nombre = document.getElementById("nombre").value.trim();
+                const correo = document.getElementById("correo").value.trim();
+                const entrada = document.getElementById("fechaEntrada").value;
+                const salida = document.getElementById("fechaSalida").value;
+                const huespedes = document.getElementById("huespedes").value;
+                const habitacion = document.getElementById("habitacion").value;
+
+                if (!nombre || !correo || !entrada || !salida || !huespedes || !habitacion) {
+                    mostrarMensaje("Por favor completa todos los campos.");
+                    return;
+                }
+
+                localStorage.setItem("usuarioActual", correo);
+
+                const formData = new FormData();
+                formData.append("nombre", nombre);
+                formData.append("correo", correo);
+                formData.append("entrada", entrada);
+                formData.append("salida", salida);
+                formData.append("huespedes", huespedes);
+                formData.append("habitacion", habitacion);
+
+                const res = await fetch("guardar_reserva.php", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const text = await res.text();
+
+                if (text.trim() === "ok") {
+                    mostrarMensaje("¡Reservación guardada!");
+                    form.reset();
+                    cargarReservas();
+                } else {
+                    mostrarMensaje("Error al guardar");
+                }
+            });
+
+            async function cargarReservas() {
+                lista.innerHTML = "";
+
+                const usuario = localStorage.getItem("usuarioActual");
+                if (!usuario) {
+                    lista.innerHTML = "<li>Ingresa una reservación para ver tu historial.</li>";
+                    return;
+                }
+
+                const res = await fetch("listar_reservas.php?correo=" + usuario);
+                const reservas = await res.json();
+
+                if (reservas.length === 0) {
+                    lista.innerHTML = "<li>No tienes reservaciones guardadas.</li>";
+                    return;
+                }
+
+                reservas.forEach(reserva => {
+                    const li = document.createElement("li");
+                    li.innerHTML = `
+                <div><strong>${reserva.nombre}</strong> — ${reserva.correo}</div>
+                <div>Llegada: ${reserva.fecha_entrada} | Salida: ${reserva.fecha_salida}</div>
+                <div>Huéspedes: ${reserva.huespedes} | Habitación: ${reserva.habitacion}</div>
+                <button class="btn-eliminar" data-id="${reserva.id}">Eliminar</button>
+            `;
+
+                    li.querySelector(".btn-eliminar").addEventListener("click", () => eliminarReserva(reserva.id));
+
+                    lista.appendChild(li);
+                });
+            }
+
+            async function eliminarReserva(id) {
+                const data = new FormData();
+                data.append("id", id);
+
+                const res = await fetch("eliminar_reserva.php", {
+                    method: "POST",
+                    body: data
+                });
+
+                const text = await res.text();
+
+                if (text.trim() === "ok") {
+                    mostrarMensaje("Reservación eliminada.");
+                    cargarReservas();
+                } else {
+                    mostrarMensaje("Error al eliminar.");
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
