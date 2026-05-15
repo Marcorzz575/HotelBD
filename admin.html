@@ -159,23 +159,84 @@
     </div>
 
     <script>
-        // Funciones temporales (Frontend) para los botones de las Vistas
-        function cargarVista(tipo) {
+        // 1. FUNCIONES PARA LOS BOTONES DE REPORTES (VISTAS Y EXCEL)
+        async function cargarVista(tipo) {
             const contenedor = document.getElementById('contenedor-vistas');
-            if (tipo === 'top_clientes') {
-                contenedor.innerHTML = `
-                    <table class="vistas-table">
-                        <tr><th>Huésped</th><th>Total Gastado</th><th>Visitas</th></tr>
-                        <tr><td colspan="3"><em>Conectando a Vista_Top_Clientes de SQL Server...</em></td></tr>
-                    </table>`;
-            } else if (tipo === 'ingresos_tipo') {
-                contenedor.innerHTML = `
-                    <table class="vistas-table">
-                        <tr><th>Tipo Habitación</th><th>Total Ingresos</th><th>Reservas Realizadas</th></tr>
-                        <tr><td colspan="3"><em>Conectando a Vista_Ingresos_Por_Tipo de SQL Server...</em></td></tr>
-                    </table>`;
+            contenedor.innerHTML = "<p>Cargando datos desde SQL Server...</p>";
+
+            try {
+                // Ahora llama directamente al archivo en la misma carpeta
+                const res = await fetch("obtener_vistas.php?vista=" + tipo);
+                const datos = await res.json();
+
+                if (tipo === 'excel') {
+                    alert(datos[0].Mensaje || datos[0].Error);
+                    contenedor.innerHTML = "";
+                    return;
+                }
+
+                if (datos.length === 0) {
+                    contenedor.innerHTML = "<p>No hay datos para mostrar en esta vista.</p>";
+                    return;
+                }
+
+                let tablaHTML = '<table class="vistas-table"><tr>';
+                const columnas = Object.keys(datos[0]);
+
+                columnas.forEach(col => { tablaHTML += `<th>${col}</th>`; });
+                tablaHTML += '</tr>';
+
+                datos.forEach(fila => {
+                    tablaHTML += '<tr>';
+                    columnas.forEach(col => { tablaHTML += `<td>${fila[col]}</td>`; });
+                    tablaHTML += '</tr>';
+                });
+                tablaHTML += '</table>';
+
+                contenedor.innerHTML = tablaHTML;
+
+            } catch (error) {
+                contenedor.innerHTML = "<p style='color:red;'>Error de conexión con la base de datos.</p>";
             }
         }
+
+        // 2. FUNCIONES PARA LA OPERACIÓN DIARIA (CHECK-IN, CHECK-OUT, ETC)
+        document.addEventListener("DOMContentLoaded", () => {
+
+            async function enviarFormularioAdmin(idFormulario, accion, datosExtra = {}) {
+                const form = document.getElementById(idFormulario);
+                form.addEventListener("submit", async (e) => {
+                    e.preventDefault();
+
+                    const data = new FormData();
+                    data.append("accion", accion);
+
+                    for (const [key, value] of Object.entries(datosExtra)) {
+                        data.append(key, document.getElementById(value).value);
+                    }
+
+                    try {
+                        // Ahora llama directamente al archivo en la misma carpeta
+                        const res = await fetch("procesar_admin.php", { method: "POST", body: data });
+                        const text = await res.text();
+
+                        if (text.trim() === "ok") {
+                            alert(`Operación '${accion}' realizada con éxito en la Base de Datos.`);
+                            form.reset();
+                        } else {
+                            alert(`Error en SQL Server: Revisa que el ID o la habitación existan.`);
+                        }
+                    } catch (error) {
+                        alert("Error de red al conectar con PHP.");
+                    }
+                });
+            }
+
+            enviarFormularioAdmin("formCheckIn", "checkin", { "id_reserva": "id_reserva_in" });
+            enviarFormularioAdmin("formCheckOut", "checkout", { "id_reserva": "id_reserva_out" });
+            enviarFormularioAdmin("formLimpieza", "limpieza", { "num_hab": "num_hab_limpia" });
+            enviarFormularioAdmin("formMantenimiento", "mantenimiento", { "num_hab": "num_hab_manto", "dias": "dias_manto" });
+        });
     </script>
 </body>
 
