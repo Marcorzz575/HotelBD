@@ -22,11 +22,21 @@ if ($tipo_vista == 'top_clientes') {
     }
     echo json_encode($resultados);
 
+} else if ($tipo_vista == 'huespedes_activos') {
+    // 👇 Nueva condicional para llamar a tu vista de SQL Server
+    $sql = "SELECT * FROM Vista_Huespedes_Activos";
+    $stmt = sqlsrv_query($conn, $sql);
+    while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+        $resultados[] = $row;
+    }
+    echo json_encode($resultados);
+
 } else if ($tipo_vista == 'excel') {
     // Llama al procedimiento que usa BCP para generar el CSV físico en C:\Reportes
     $stmt = sqlsrv_query($conn, "{call Sp_Reporte_Excel}");
     if ($stmt) {
-        echo json_encode([["Mensaje" => "Reporte generado exitosamente en C:\Reportes"]]);
+        // Se añade doble barra (\\) para evitar problemas de escape en PHP
+        echo json_encode([["Mensaje" => "Reporte generado exitosamente en C:\\PIA\\Reporte"]]);
     } else {
         echo json_encode([["Mensaje" => "Error al generar el reporte"]]);
     }

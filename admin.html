@@ -38,6 +38,12 @@
         .btn-vista {
             background-color: #2c9688;
             margin-top: 10px;
+            padding: 10px 15px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
         }
 
         .btn-vista:hover {
@@ -106,14 +112,22 @@
                                 <h2>1. Reportes Gerenciales (Vistas SQL)</h2>
                                 <p>Presiona los botones para consultar las vistas directamente desde la base de datos.
                                 </p>
+
                                 <div class="grid-forms" style="margin-bottom: 20px;">
                                     <button class="btn-vista" id="btnTopClientes"
                                         onclick="cargarVista('top_clientes')">Ver Top Clientes</button>
+
                                     <button class="btn-vista" id="btnIngresos"
                                         onclick="cargarVista('ingresos_tipo')">Ver Ingresos por Tipo</button>
-                                    <button class="btn-vista" id="btnExcel" style="background-color: #d35400;">Generar
-                                        Reporte Excel</button>
+
+                                    <button class="btn-vista" id="btnHuespedesActivos"
+                                        style="background-color: #00796b;"
+                                        onclick="cargarVista('huespedes_activos')">Ver Huéspedes Activos</button>
+
+                                    <button class="btn-vista" id="btnExcel" style="background-color: #d35400;"
+                                        onclick="cargarVista('excel')">Generar Reporte Excel</button>
                                 </div>
+
                                 <div id="contenedor-vistas" style="overflow-x: auto;">
                                 </div>
                             </div>
@@ -177,7 +191,6 @@
             contenedor.innerHTML = "<p>Cargando datos desde SQL Server...</p>";
 
             try {
-                // Ahora llama directamente al archivo en la misma carpeta
                 const res = await fetch("obtener_vistas.php?vista=" + tipo);
                 const datos = await res.json();
 
@@ -228,7 +241,6 @@
                     }
 
                     try {
-                        // Ahora llama directamente al archivo en la misma carpeta
                         const res = await fetch("procesar_admin.php", { method: "POST", body: data });
                         const text = await res.text();
 
