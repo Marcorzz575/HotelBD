@@ -80,24 +80,12 @@
                 </div>
                 <div id="navigation">
                     <ul>
-                        <li>
-                            <a href="index.html">INICIO</a>
-                        </li>
-                        <li>
-                            <a href="about.html">SERVICIO</a>
-                        </li>
-                        <li>
-                            <a href="habitaciones.html">HABITACIONES</a>
-                        </li>
-                        <li>
-                            <a href="foods.html">RESERVACIONES</a>
-                        </li>
-                        <li>
-                            <a href="contact.html">CONTACTO</a>
-                        </li>
-                        <li class="selected">
-                            <a href="admin.html">RECEPCIÓN</a>
-                        </li>
+                        <li><a href="index.html">INICIO</a></li>
+                        <li><a href="about.html">SERVICIO</a></li>
+                        <li><a href="habitaciones.html">HABITACIONES</a></li>
+                        <li><a href="foods.html">RESERVACIONES</a></li>
+                        <li><a href="contact.html">MIS RESERVAS</a></li>
+                        <li class="selected"><a href="admin.html">RECEPCIÓN</a></li>
                     </ul>
                 </div>
             </div>
@@ -116,43 +104,20 @@
                                 <div class="grid-forms" style="margin-bottom: 20px;">
                                     <button class="btn-vista" id="btnTopClientes"
                                         onclick="cargarVista('top_clientes')">Ver Top Clientes</button>
-
                                     <button class="btn-vista" id="btnIngresos"
                                         onclick="cargarVista('ingresos_tipo')">Ver Ingresos por Tipo</button>
-
                                     <button class="btn-vista" id="btnHuespedesActivos"
                                         style="background-color: #00796b;"
                                         onclick="cargarVista('huespedes_activos')">Ver Huéspedes Activos</button>
-
                                     <button class="btn-vista" id="btnExcel" style="background-color: #d35400;"
                                         onclick="cargarVista('excel')">Generar Reporte Excel</button>
                                 </div>
 
-                                <div id="contenedor-vistas" style="overflow-x: auto;">
-                                </div>
+                                <div id="contenedor-vistas" style="overflow-x: auto;"></div>
                             </div>
 
                             <div class="admin-section">
-                                <h2>2. Operación Diaria (Recepción)</h2>
-                                <div class="grid-forms">
-                                    <form class="form-reserva" id="formCheckIn">
-                                        <h3>Hacer Check-In</h3>
-                                        <label for="id_reserva_in">ID de Reservación:</label>
-                                        <input type="number" id="id_reserva_in" required>
-                                        <button type="submit">Ejecutar Check-In</button>
-                                    </form>
-
-                                    <form class="form-reserva" id="formCheckOut">
-                                        <h3>Hacer Check-Out</h3>
-                                        <label for="id_reserva_out">ID de Reservación:</label>
-                                        <input type="number" id="id_reserva_out" required>
-                                        <button type="submit">Ejecutar Check-Out</button>
-                                    </form>
-                                </div>
-                            </div>
-
-                            <div class="admin-section">
-                                <h2>3. Mantenimiento y Limpieza</h2>
+                                <h2>2. Mantenimiento y Limpieza</h2>
                                 <div class="grid-forms">
                                     <form class="form-reserva" id="formLimpieza">
                                         <h3>Finalizar Limpieza</h3>
@@ -185,7 +150,6 @@
     </div>
 
     <script>
-        // 1. FUNCIONES PARA LOS BOTONES DE REPORTES (VISTAS Y EXCEL)
         async function cargarVista(tipo) {
             const contenedor = document.getElementById('contenedor-vistas');
             contenedor.innerHTML = "<p>Cargando datos desde SQL Server...</p>";
@@ -225,9 +189,7 @@
             }
         }
 
-        // 2. FUNCIONES PARA LA OPERACIÓN DIARIA (CHECK-IN, CHECK-OUT, ETC)
         document.addEventListener("DOMContentLoaded", () => {
-
             async function enviarFormularioAdmin(idFormulario, accion, datosExtra = {}) {
                 const form = document.getElementById(idFormulario);
                 form.addEventListener("submit", async (e) => {
@@ -248,7 +210,7 @@
                             alert(`Operación '${accion}' realizada con éxito en la Base de Datos.`);
                             form.reset();
                         } else {
-                            alert(`Error en SQL Server: Revisa que el ID o la habitación existan.`);
+                            alert(`Error en SQL Server: Revisa la configuración de la habitación.`);
                         }
                     } catch (error) {
                         alert("Error de red al conectar con PHP.");
@@ -256,8 +218,6 @@
                 });
             }
 
-            enviarFormularioAdmin("formCheckIn", "checkin", { "id_reserva": "id_reserva_in" });
-            enviarFormularioAdmin("formCheckOut", "checkout", { "id_reserva": "id_reserva_out" });
             enviarFormularioAdmin("formLimpieza", "limpieza", { "num_hab": "num_hab_limpia" });
             enviarFormularioAdmin("formMantenimiento", "mantenimiento", { "num_hab": "num_hab_manto", "dias": "dias_manto" });
         });
