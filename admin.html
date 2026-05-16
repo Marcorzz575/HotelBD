@@ -3,70 +3,168 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Panel de Administración - Hotel Paraiso</title>
+    <title>Panel de Administración - Hotel Paraíso</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" href="css/style.css" type="text/css">
     <link rel="stylesheet" href="css/estilo.css" type="text/css">
     <style>
-        .admin-section {
-            background: #f5f5f5;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        /* Estilos del Dashboard Gerencial */
+        .dashboard-header {
+            text-align: center;
             margin-bottom: 30px;
         }
 
+        .dashboard-header h1 {
+            color: #004d40;
+            margin-bottom: 5px;
+            border-bottom: none;
+        }
+
+        .dashboard-header p {
+            color: #666;
+            font-size: 1em;
+        }
+
+        .admin-section {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 35px;
+            border-top: 4px solid #00695c;
+        }
+
         .admin-section h2 {
-            border-bottom: 2px solid #00695c;
+            border-bottom: 2px solid #e0f2f1;
             padding-bottom: 10px;
             color: #004d40;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.5em;
         }
 
-        .grid-forms {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .form-reserva {
-            max-width: 100%;
-            flex: 1;
-            min-width: 300px;
-            margin: 0;
+        /* Botones de Reportes */
+        .grid-reports {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
         }
 
         .btn-vista {
             background-color: #2c9688;
-            margin-top: 10px;
-            padding: 10px 15px;
             color: white;
             border: none;
-            border-radius: 5px;
+            padding: 15px 10px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         .btn-vista:hover {
             background-color: #1e6b61;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Tabla de Vistas SQL */
+        #contenedor-vistas {
+            overflow-x: auto;
+            border-radius: 6px;
         }
 
         table.vistas-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 15px;
             background: white;
+            font-size: 0.95em;
         }
 
         table.vistas-table th,
         table.vistas-table td {
-            border: 1px solid #ccc;
-            padding: 10px;
+            border: 1px solid #ddd;
+            padding: 12px 15px;
             text-align: left;
         }
 
         table.vistas-table th {
-            background-color: #00695c;
+            background-color: #004d40;
             color: white;
+            text-transform: uppercase;
+            font-size: 0.85em;
+            letter-spacing: 0.5px;
+        }
+
+        table.vistas-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        table.vistas-table tr:hover {
+            background-color: #f1f8f6;
+        }
+
+        /* Formularios de Operación */
+        .grid-forms {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .form-reserva {
+            background: #fcfcfc;
+            padding: 20px;
+            border-radius: 6px;
+            border: 1px solid #eee;
+        }
+
+        .form-reserva h3 {
+            color: #00695c;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            border-bottom: 1px dashed #ccc;
+            padding-bottom: 8px;
+        }
+
+        .form-reserva label {
+            display: block;
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 6px;
+            font-size: 0.9em;
+        }
+
+        .form-reserva input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .form-reserva input:focus {
+            border-color: #00695c;
+            outline: none;
+        }
+
+        .form-reserva button {
+            width: 100%;
+            padding: 12px;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1em;
+            transition: opacity 0.3s;
+        }
+
+        .form-reserva button:hover {
+            opacity: 0.85;
         }
     </style>
 </head>
@@ -81,10 +179,10 @@
                 <div id="navigation">
                     <ul>
                         <li><a href="index.html">INICIO</a></li>
-                        <li><a href="about.html">SERVICIO</a></li>
+                        <li><a href="about.html">SERVICIOS</a></li>
                         <li><a href="habitaciones.html">HABITACIONES</a></li>
-                        <li><a href="foods.html">RESERVACIONES</a></li>
-                        <li><a href="contact.html">MIS RESERVAS</a></li>
+                        <li><a href="reservar.html">RESERVAR</a></li>
+                        <li><a href="misreservas.html">MIS RESERVAS</a></li>
                         <li class="selected"><a href="admin.html">RECEPCIÓN</a></li>
                     </ul>
                 </div>
@@ -92,67 +190,88 @@
 
             <div id="contents">
                 <div class="box">
-                    <div>
-                        <div class="body">
-                            <h1>PANEL DE CONTROL DEL HOTEL</h1>
+                    <div class="body">
 
-                            <div class="admin-section">
-                                <h2>1. Reportes Gerenciales (Vistas SQL)</h2>
-                                <p>Presiona los botones para consultar las vistas directamente desde la base de datos.
-                                </p>
-
-                                <div class="grid-forms" style="margin-bottom: 20px;">
-                                    <button class="btn-vista" id="btnTopClientes"
-                                        onclick="cargarVista('top_clientes')">Ver Top Clientes</button>
-                                    <button class="btn-vista" id="btnIngresos"
-                                        onclick="cargarVista('ingresos_tipo')">Ver Ingresos por Tipo</button>
-                                    <button class="btn-vista" id="btnHuespedesActivos"
-                                        style="background-color: #00796b;"
-                                        onclick="cargarVista('huespedes_activos')">Ver Huéspedes Activos</button>
-                                    <button class="btn-vista" id="btnExcel" style="background-color: #d35400;"
-                                        onclick="cargarVista('excel')">Generar Reporte Excel</button>
-                                </div>
-
-                                <div id="contenedor-vistas" style="overflow-x: auto;"></div>
-                            </div>
-
-                            <div class="admin-section">
-                                <h2>2. Mantenimiento y Limpieza</h2>
-                                <div class="grid-forms">
-                                    <form class="form-reserva" id="formLimpieza">
-                                        <h3>Finalizar Limpieza</h3>
-                                        <label for="num_hab_limpia">Número de Habitación:</label>
-                                        <input type="number" id="num_hab_limpia" required>
-                                        <button type="submit" style="background-color: #27ae60;">Marcar como
-                                            Disponible</button>
-                                    </form>
-
-                                    <form class="form-reserva" id="formMantenimiento">
-                                        <h3>Bloqueo por Mantenimiento</h3>
-                                        <label for="num_hab_manto">Número de Habitación:</label>
-                                        <input type="number" id="num_hab_manto" required>
-                                        <label for="dias_manto">Días a bloquear:</label>
-                                        <input type="number" id="dias_manto" required>
-                                        <button type="submit" style="background-color: #c0392b;">Bloquear
-                                            Habitación</button>
-                                    </form>
-                                </div>
-                            </div>
-
+                        <div class="dashboard-header">
+                            <h1>PANEL DE ADMINISTRACIÓN Y RECEPCIÓN</h1>
+                            <p>Gestión interna de reportes gerenciales, control de limpieza y bloqueos de mantenimiento.
+                            </p>
                         </div>
+
+                        <div class="admin-section">
+                            <h2>1. Reportes Gerenciales (Vistas SQL)</h2>
+                            <p style="margin-bottom: 15px; color:#555;">Selecciona un reporte para extraer la
+                                información en tiempo real desde la base de datos.</p>
+
+                            <div class="grid-reports">
+                                <button class="btn-vista" id="btnTopClientes" onclick="cargarVista('top_clientes')">
+                                    🏆 Ver Top Clientes
+                                </button>
+                                <button class="btn-vista" id="btnIngresos" onclick="cargarVista('ingresos_tipo')">
+                                    💰 Ingresos por Tipo
+                                </button>
+                                <button class="btn-vista" id="btnHuespedesActivos" style="background-color: #00796b;"
+                                    onclick="cargarVista('huespedes_activos')">
+                                    🛎️ Ver Huéspedes Activos
+                                </button>
+                                <button class="btn-vista" id="btnExcel" style="background-color: #d35400;"
+                                    onclick="cargarVista('excel')">
+                                    📊 Generar Reporte Excel
+                                </button>
+                            </div>
+
+                            <div id="contenedor-vistas"></div>
+                        </div>
+
+                        <div class="admin-section">
+                            <h2>2. Operaciones de Mantenimiento y Limpieza</h2>
+                            <div class="grid-forms">
+
+                                <form class="form-reserva" id="formLimpieza">
+                                    <h3>Finalizar Limpieza</h3>
+                                    <label for="num_hab_limpia">Número de Habitación:</label>
+                                    <input type="number" id="num_hab_limpia" placeholder="Ej. 101" required>
+                                    <button type="submit" style="background-color: #27ae60;">Marcar como
+                                        Disponible</button>
+                                </form>
+
+                                <form class="form-reserva" id="formMantenimiento">
+                                    <h3>Bloqueo por Mantenimiento</h3>
+                                    <label for="num_hab_manto">Número de Habitación:</label>
+                                    <input type="number" id="num_hab_manto" placeholder="Ej. 205" required>
+                                    <label for="dias_manto">Días a bloquear:</label>
+                                    <input type="number" id="dias_manto" placeholder="Cantidad de días" required>
+                                    <button type="submit" style="background-color: #c0392b;">Ejecutar Bloqueo</button>
+                                </form>
+
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
+
         <div id="footer">
-            <p>© 2026 Derechos reservados. Panel de Administración.</p>
+            <div>
+                <ul class="navigation">
+                    <li><a href="index.html">INICIO</a></li>
+                    <li><a href="about.html">SERVICIOS</a></li>
+                    <li><a href="habitaciones.html">HABITACIONES</a></li>
+                    <li><a href="reservar.html">RESERVAR</a></li>
+                    <li><a href="misreservas.html">MIS RESERVAS</a></li>
+                    <li class="active"><a href="admin.html">RECEPCIÓN</a></li>
+                </ul>
+            </div>
+            <p>© 2026 Hotel Paraíso. Panel de Administración Exclusivo.</p>
         </div>
     </div>
 
     <script>
+        // 1. CARGA DE VISTAS SQL
         async function cargarVista(tipo) {
             const contenedor = document.getElementById('contenedor-vistas');
-            contenedor.innerHTML = "<p>Cargando datos desde SQL Server...</p>";
+            contenedor.innerHTML = "<p style='text-align:center; padding:20px; color:#555;'>Cargando datos desde SQL Server...</p>";
 
             try {
                 const res = await fetch("obtener_vistas.php?vista=" + tipo);
@@ -164,20 +283,28 @@
                     return;
                 }
 
-                if (datos.length === 0) {
-                    contenedor.innerHTML = "<p>No hay datos para mostrar en esta vista.</p>";
+                if (datos.length === 0 || datos.Error) {
+                    contenedor.innerHTML = "<p style='text-align:center; color:#c62828; padding:20px;'>No hay datos para mostrar en esta vista en este momento.</p>";
                     return;
                 }
 
                 let tablaHTML = '<table class="vistas-table"><tr>';
                 const columnas = Object.keys(datos[0]);
 
-                columnas.forEach(col => { tablaHTML += `<th>${col}</th>`; });
+                columnas.forEach(col => {
+                    // Reemplazamos guiones bajos por espacios para los títulos
+                    const titulo = col.replace(/_/g, ' ');
+                    tablaHTML += `<th>${titulo}</th>`;
+                });
                 tablaHTML += '</tr>';
 
                 datos.forEach(fila => {
                     tablaHTML += '<tr>';
-                    columnas.forEach(col => { tablaHTML += `<td>${fila[col]}</td>`; });
+                    columnas.forEach(col => {
+                        // Formateo de valores nulos si los hay
+                        const valor = fila[col] !== null ? fila[col] : 'N/A';
+                        tablaHTML += `<td>${valor}</td>`;
+                    });
                     tablaHTML += '</tr>';
                 });
                 tablaHTML += '</table>';
@@ -185,10 +312,11 @@
                 contenedor.innerHTML = tablaHTML;
 
             } catch (error) {
-                contenedor.innerHTML = "<p style='color:red;'>Error de conexión con la base de datos.</p>";
+                contenedor.innerHTML = "<p style='color:red; text-align:center; padding:20px;'>Error de conexión con la base de datos SQL Server.</p>";
             }
         }
 
+        // 2. PROCESAMIENTO DE FORMULARIOS DE MANTENIMIENTO
         document.addEventListener("DOMContentLoaded", () => {
             async function enviarFormularioAdmin(idFormulario, accion, datosExtra = {}) {
                 const form = document.getElementById(idFormulario);
@@ -207,10 +335,10 @@
                         const text = await res.text();
 
                         if (text.trim() === "ok") {
-                            alert(`Operación '${accion}' realizada con éxito en la Base de Datos.`);
+                            alert(`Operación '${accion.toUpperCase()}' realizada con éxito en la Base de Datos.`);
                             form.reset();
                         } else {
-                            alert(`Error en SQL Server: Revisa la configuración de la habitación.`);
+                            alert(`Error en SQL Server: Revisa la configuración de la habitación (Asegúrate de que la habitación exista y su estado actual permita esta acción).`);
                         }
                     } catch (error) {
                         alert("Error de red al conectar con PHP.");

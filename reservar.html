@@ -3,81 +3,111 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Reservaciones - Bhaccasyoniztas</title>
+    <title>HOTEL PARAÍSO - RESERVAR</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" href="css/style.css" type="text/css">
     <link rel="stylesheet" href="css/estilo.css" type="text/css">
-
     <style>
+        /* Estilo moderno exclusivo para el formulario de reservación */
+        .reserva-container {
+            max-width: 650px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border-top: 5px solid #00695c;
+        }
+
+        .reserva-container h1 {
+            text-align: center;
+            color: #004d40;
+            margin-bottom: 5px;
+            border-bottom: none;
+        }
+
+        .reserva-container p.subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 0.95em;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group.grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
         .form-reserva label {
             display: block;
-            margin: 10px 0 4px;
-            font-weight: 600;
+            margin-bottom: 6px;
+            font-weight: bold;
+            color: #333;
+            font-size: 0.9em;
         }
 
         .form-reserva input,
-        .form-reserva select,
-        .form-reserva button {
-            display: block !important;
-            width: 100% !important;
-            box-sizing: border-box !important;
-            opacity: 1 !important;
-            visibility: visible !important;
-            transform: none !important;
-            pointer-events: auto !important;
-            position: relative !important;
-            z-index: 2 !important;
-            transition: none !important;
-        }
-
-        .body,
-        #contents,
-        .box {
-            position: relative;
-            z-index: 1;
-        }
-
-        .lista-reservas {
-            list-style: none;
-            padding: 0;
-            margin-top: 20px;
-        }
-
-        .lista-reservas li {
-            background: #f7f7f7;
+        .form-reserva select {
+            width: 100%;
             padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 6px;
-        }
-
-        .btn-eliminar {
-            background-color: #c62828;
-            color: #fff;
-            border: none;
-            padding: 5px 10px;
-            margin-top: 8px;
-            cursor: pointer;
+            border: 1px solid #ccc;
             border-radius: 5px;
+            box-sizing: border-box;
+            font-family: inherit;
+            background-color: #fcfcfc;
         }
 
-        .btn-eliminar:hover {
-            background-color: #b71c1c;
+        .form-reserva input:focus,
+        .form-reserva select:focus {
+            border-color: #00695c;
+            outline: none;
+            background-color: #ffffff;
         }
 
-        .mensaje {
-            color: green;
-            font-weight: 600;
-            margin-top: 10px;
+        .btn-submit {
+            width: 100%;
+            background-color: #00695c;
+            color: #ffffff;
+            border: none;
+            padding: 14px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            background-color: #004d40;
+        }
+
+        .mensaje-alerta {
+            text-align: center;
+            font-weight: bold;
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .mensaje-exito {
+            background: #e8f5e9;
+            color: #2e7d32;
             display: block;
+            border: 1px solid #c8e6c9;
         }
 
-        @media (min-width:600px) {
-
-            .form-reserva input,
-            .form-reserva select,
-            .form-reserva button {
-                max-width: 480px;
-            }
+        .mensaje-error {
+            background: #ffebee;
+            color: #c62828;
+            display: block;
+            border: 1px solid #ffcdd2;
         }
     </style>
 </head>
@@ -91,24 +121,12 @@
                 </div>
                 <div id="navigation">
                     <ul>
-                        <li>
-                            <a href="index.html">INICIO</a>
-                        </li>
-                        <li>
-                            <a href="about.html">SERVICIO</a>
-                        </li>
-                        <li>
-                            <a href="habitaciones.html">HABITACIONES</a>
-                        </li>
-                        <li class="selected">
-                            <a href="foods.html">RESERVACIONES</a>
-                        </li>
-                        <li>
-                            <a href="contact.html">CONTACTO</a>
-                        </li>
-                        <li>
-                            <a href="admin.html">RECEPCIÓN</a>
-                        </li>
+                        <li><a href="index.html">INICIO</a></li>
+                        <li><a href="about.html">SERVICIOS</a></li>
+                        <li><a href="habitaciones.html">HABITACIONES</a></li>
+                        <li class="selected"><a href="reservar.html">RESERVAR</a></li>
+                        <li><a href="misreservas.html">MIS RESERVAS</a></li>
+                        <li><a href="admin.html">RECEPCIÓN</a></li>
                     </ul>
                 </div>
             </div>
@@ -117,41 +135,60 @@
                 <div class="box">
                     <div>
                         <div class="body">
-                            <h1>RESERVACIONES</h1>
-                            <form action="guardar_reserva.php" method="POST" class="form-reserva" id="formReserva"
-                                autocomplete="off" novalidate>
-                                <label for="nombre">Nombre completo:</label>
-                                <input type="text" id="nombre" name="nombre" required placeholder="Ej. Juan Pérez">
 
-                                <label for="correo">Correo electrónico:</label>
-                                <input type="email" id="correo" name="correo" required
-                                    placeholder="Ej. ejemplo@gmail.com" autocomplete="email">
+                            <div class="reserva-container">
+                                <h1>FORMULARIO DE RESERVACIÓN</h1>
+                                <p class="subtitle">Asegura tu estancia con nosotros completando los siguientes datos.
+                                    El pago se realizará en recepción.</p>
 
-                                <label for="fechaEntrada">Fecha de llegada:</label>
-                                <input type="date" id="fechaEntrada" name="entrada" required>
+                                <form class="form-reserva" id="formReserva" autocomplete="off" novalidate>
 
-                                <label for="fechaSalida">Fecha de salida:</label>
-                                <input type="date" id="fechaSalida" name="salida" required>
+                                    <div class="form-group">
+                                        <label for="nombre">Nombre completo (Titular de la reserva):</label>
+                                        <input type="text" id="nombre" name="nombre" required
+                                            placeholder="Ej. Juan Pérez">
+                                    </div>
 
-                                <label for="huespedes">Número de huéspedes:</label>
-                                <input type="number" id="huespedes" name="huespedes" min="1" max="10" value="1"
-                                    required>
+                                    <div class="form-group">
+                                        <label for="correo">Correo electrónico (Para gestionar tu reserva):</label>
+                                        <input type="email" id="correo" name="correo" required
+                                            placeholder="Ej. ejemplo@correo.com">
+                                    </div>
 
-                                <label for="habitacion">Tipo de habitación (Sujeto a disponibilidad):</label>
-                                <select id="habitacion" name="habitacion" required>
-                                    <option value="">Seleccione...</option>
-                                    <option value="Estandar">Estándar - $1,500 MXN / noche</option>
-                                    <option value="Premium">Premium - $2,500 MXN / noche</option>
-                                    <option value="Ejecutiva">Ejecutiva - $4,000 MXN / noche</option>
-                                </select>
+                                    <div class="form-group grid-2">
+                                        <div>
+                                            <label for="fechaEntrada">Fecha de llegada:</label>
+                                            <input type="date" id="fechaEntrada" name="entrada" required>
+                                        </div>
+                                        <div>
+                                            <label for="fechaSalida">Fecha de salida:</label>
+                                            <input type="date" id="fechaSalida" name="salida" required>
+                                        </div>
+                                    </div>
 
-                                <button type="submit">Reservar ahora</button>
+                                    <div class="form-group grid-2">
+                                        <div>
+                                            <label for="huespedes">Número de huéspedes:</label>
+                                            <input type="number" id="huespedes" name="huespedes" min="1" max="10"
+                                                value="2" required>
+                                        </div>
+                                        <div>
+                                            <label for="habitacion">Tipo de habitación:</label>
+                                            <select id="habitacion" name="habitacion" required>
+                                                <option value="">Seleccione...</option>
+                                                <option value="Estandar">Estándar - $1,500 MXN / noche</option>
+                                                <option value="Premium">Premium - $2,500 MXN / noche</option>
+                                                <option value="Ejecutiva">Ejecutiva - $4,000 MXN / noche</option>
+                                            </select>
+                                        </div>
+                                    </div>
 
-                                <p id="mensaje" class="mensaje" aria-live="polite"></p>
-                            </form>
+                                    <button type="submit" class="btn-submit" id="btnGuardar">Confirmar
+                                        Reservación</button>
 
-                            <h2>Reservaciones guardadas</h2>
-                            <ul id="listaReservas" class="lista-reservas" aria-live="polite"></ul>
+                                    <div id="mensajeBox" class="mensaje-alerta"></div>
+                                </form>
+                            </div>
 
                         </div>
                     </div>
@@ -162,48 +199,28 @@
         <div id="footer">
             <div>
                 <ul class="navigation">
-                    <li>
-                        <a href="index.html">INICIO</a>
-                    </li>
-                    <li>
-                        <a href="about.html">SERVICIOS</a>
-                    </li>
-                    <li>
-                        <a href="habitaciones.html">HABITACIONES</a>
-                    </li>
-                    <li class="active">
-                        <a href="foods.html">RESERVACIONES</a>
-                    </li>
-                    <li>
-                        <a href="contact.html">CONTACTO</a>
-                    </li>
-                    <li>
-                        <a href="admin.html">RECEPCIÓN</a>
-                    </li>
+                    <li><a href="index.html">INICIO</a></li>
+                    <li><a href="about.html">SERVICIOS</a></li>
+                    <li><a href="habitaciones.html">HABITACIONES</a></li>
+                    <li class="active"><a href="reservar.html">RESERVAR</a></li>
+                    <li><a href="misreservas.html">MIS RESERVAS</a></li>
+                    <li><a href="admin.html">RECEPCIÓN</a></li>
                 </ul>
             </div>
-            <p>
-                © 2026 Derechos reservados.
-            </p>
+            <p>© 2026 Hotel Paraíso. Derechos reservados.</p>
         </div>
     </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const form = document.getElementById("formReserva");
-            const lista = document.getElementById("listaReservas");
-            const mensaje = document.getElementById("mensaje");
-
-            function mostrarMensaje(texto, tiempo = 2500) {
-                mensaje.textContent = texto;
-                setTimeout(() => mensaje.textContent = "", tiempo);
-            }
-
-            cargarReservas();
+            const mensajeBox = document.getElementById("mensajeBox");
+            const btnGuardar = document.getElementById("btnGuardar");
 
             form.addEventListener("submit", async (e) => {
                 e.preventDefault();
 
+                // Recolección de datos
                 const nombre = document.getElementById("nombre").value.trim();
                 const correo = document.getElementById("correo").value.trim();
                 const entrada = document.getElementById("fechaEntrada").value;
@@ -211,12 +228,14 @@
                 const huespedes = document.getElementById("huespedes").value;
                 const habitacion = document.getElementById("habitacion").value;
 
+                // Validación frontend
                 if (!nombre || !correo || !entrada || !salida || !huespedes || !habitacion) {
-                    mostrarMensaje("Por favor completa todos los campos.");
+                    mostrarMensaje("Por favor, completa todos los campos del formulario.", "error");
                     return;
                 }
 
-                localStorage.setItem("usuarioActual", correo);
+                btnGuardar.textContent = "Procesando...";
+                btnGuardar.disabled = true;
 
                 const formData = new FormData();
                 formData.append("nombre", nombre);
@@ -226,71 +245,42 @@
                 formData.append("huespedes", huespedes);
                 formData.append("habitacion", habitacion);
 
-                const res = await fetch("guardar_reserva.php", {
-                    method: "POST",
-                    body: formData
-                });
+                try {
+                    // Petición al backend que re-estructuramos previamente
+                    const res = await fetch("guardar_reserva.php", {
+                        method: "POST",
+                        body: formData
+                    });
 
-                const text = await res.text();
+                    const text = await res.text();
 
-                if (text.trim() === "ok") {
-                    mostrarMensaje("¡Reservación guardada!");
-                    form.reset();
-                    cargarReservas();
-                } else {
-                    mostrarMensaje("Error al guardar");
+                    // Manejo de la respuesta de SQL Server
+                    if (text.trim() === "ok") {
+                        mostrarMensaje("¡Reservación confirmada! Puedes gestionarla en la sección 'Mis Reservas'.", "exito");
+                        form.reset();
+                    } else if (text.trim() === "error_fechas") {
+                        mostrarMensaje("Error: La fecha de salida debe ser mayor a la fecha de entrada.", "error");
+                    } else if (text.trim() === "error_sin_habitaciones") {
+                        mostrarMensaje("Lo sentimos, no hay habitaciones de este tipo disponibles para esas fechas o se encuentran en mantenimiento.", "error");
+                    } else {
+                        mostrarMensaje("Error de conexión con la base de datos.", "error");
+                    }
+                } catch (error) {
+                    mostrarMensaje("Error de red. Inténtalo de nuevo.", "error");
+                } finally {
+                    btnGuardar.textContent = "Confirmar Reservación";
+                    btnGuardar.disabled = false;
                 }
             });
 
-            async function cargarReservas() {
-                lista.innerHTML = "";
+            function mostrarMensaje(texto, tipo) {
+                mensajeBox.textContent = texto;
+                mensajeBox.className = "mensaje-alerta " + (tipo === "exito" ? "mensaje-exito" : "mensaje-error");
 
-                const usuario = localStorage.getItem("usuarioActual");
-                if (!usuario) {
-                    lista.innerHTML = "<li>Ingresa una reservación para ver tu historial.</li>";
-                    return;
-                }
-
-                const res = await fetch("listar_reservas.php?correo=" + usuario);
-                const reservas = await res.json();
-
-                if (reservas.length === 0) {
-                    lista.innerHTML = "<li>No tienes reservaciones guardadas.</li>";
-                    return;
-                }
-
-                reservas.forEach(reserva => {
-                    const li = document.createElement("li");
-                    li.innerHTML = `
-                <div><strong>${reserva.nombre}</strong> — ${reserva.correo}</div>
-                <div>Llegada: ${reserva.fecha_entrada} | Salida: ${reserva.fecha_salida}</div>
-                <div>Huéspedes: ${reserva.huespedes} | Habitación: ${reserva.habitacion}</div>
-                <button class="btn-eliminar" data-id="${reserva.id}">Eliminar</button>
-            `;
-
-                    li.querySelector(".btn-eliminar").addEventListener("click", () => eliminarReserva(reserva.id));
-
-                    lista.appendChild(li);
-                });
-            }
-
-            async function eliminarReserva(id) {
-                const data = new FormData();
-                data.append("id", id);
-
-                const res = await fetch("eliminar_reserva.php", {
-                    method: "POST",
-                    body: data
-                });
-
-                const text = await res.text();
-
-                if (text.trim() === "ok") {
-                    mostrarMensaje("Reservación eliminada.");
-                    cargarReservas();
-                } else {
-                    mostrarMensaje("Error al eliminar.");
-                }
+                // Ocultar el mensaje después de 6 segundos
+                setTimeout(() => {
+                    mensajeBox.className = "mensaje-alerta";
+                }, 6000);
             }
         });
     </script>

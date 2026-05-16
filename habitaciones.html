@@ -1,10 +1,84 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 
 <head>
 	<meta charset="UTF-8">
-	<title>Habitaciones - Hotel paraiso</title>
+	<title>HOTEL PARAÍSO - HABITACIONES</title>
 	<link rel="stylesheet" href="css/style.css" type="text/css">
+	<link rel="stylesheet" href="css/estilo.css" type="text/css">
+	<style>
+		/* Estilos modernos para las Tarjetas de Habitaciones */
+		#rooms {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+			gap: 30px;
+			list-style: none;
+			padding: 0;
+			margin-top: 30px;
+		}
+
+		#rooms li {
+			background: #ffffff;
+			border-radius: 8px;
+			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+			overflow: hidden;
+			display: flex;
+			flex-direction: column;
+			border-bottom: 4px solid #00695c;
+			transition: transform 0.3s ease;
+		}
+
+		#rooms li:hover {
+			transform: translateY(-8px);
+		}
+
+		#rooms img {
+			width: 100%;
+			height: 220px;
+			object-fit: cover;
+			border-bottom: 3px solid #e0f2f1;
+		}
+
+		.room-info {
+			padding: 20px;
+			display: flex;
+			flex-direction: column;
+			flex-grow: 1;
+		}
+
+		.room-info h2 {
+			color: #004d40;
+			font-size: 1.4em;
+			margin: 0 0 10px 0;
+			text-align: center;
+			border: none;
+		}
+
+		.room-info p {
+			color: #555;
+			line-height: 1.6;
+			text-align: justify;
+			flex-grow: 1;
+		}
+
+		.btn-reservar-room {
+			display: block;
+			text-align: center;
+			background: #00695c;
+			color: #ffffff;
+			text-decoration: none;
+			padding: 10px 15px;
+			border-radius: 5px;
+			margin-top: 15px;
+			font-weight: bold;
+			transition: background 0.3s;
+		}
+
+		.btn-reservar-room:hover {
+			background: #004d40;
+			color: #ffffff;
+		}
+	</style>
 </head>
 
 <body>
@@ -20,16 +94,16 @@
 							<a href="index.html">INICIO</a>
 						</li>
 						<li>
-							<a href="about.html">SERVICIO</a>
+							<a href="about.html">SERVICIOS</a>
 						</li>
 						<li class="selected">
 							<a href="habitaciones.html">HABITACIONES</a>
 						</li>
 						<li>
-							<a href="foods.html">RESERVACIONES</a>
+							<a href="reservar.html">RESERVAR</a>
 						</li>
 						<li>
-							<a href="contact.html">CONTACTO</a>
+							<a href="misreservas.html">MIS RESERVAS</a>
 						</li>
 						<li>
 							<a href="admin.html">RECEPCIÓN</a>
@@ -37,41 +111,59 @@
 					</ul>
 				</div>
 			</div>
+
 			<div id="contents">
 				<div class="box">
 					<div>
 						<div class="body">
-							<h1>HABITACIONES</h1>
+							<h1 style="text-align: center; color: #004d40; margin-bottom: 10px;">NUESTRAS HABITACIONES
+							</h1>
+							<p style="text-align: center; color: #666; margin-bottom: 30px;">Descubre el confort y la
+								elegancia en cada uno de nuestros espacios diseñados para ti.</p>
+
 							<ul id="rooms">
 								<li>
-									<a href="rooms.html"><img src="images/habsencilla.jpg" alt="Img" height="250"
-											width="400"></a>
-									<h2><a href="rooms.html">ESTANDAR</a></h2>
-									<p>
-										La habitación estándar ofrece comodidad y funcionalidad para una estancia
-										agradable.
-										Cuenta con cama matrimonial o dos individuales
-									</p>
+									<a href="reservar.html"><img src="images/habsencilla.jpg"
+											alt="Habitación Estándar"></a>
+									<div class="room-info">
+										<h2>ESTÁNDAR</h2>
+										<p>
+											La habitación estándar ofrece comodidad y funcionalidad para una estancia
+											agradable.
+											Cuenta con cama matrimonial o dos individuales, televisión de pantalla plana
+											y baño privado con amenidades exclusivas.
+										</p>
+										<a href="reservar.html" class="btn-reservar-room">¡Reserva esta habitación!</a>
+									</div>
 								</li>
+
 								<li>
-									<a href="rooms.html"><img src="images/deluxe.jpg" alt="Img" height="250"
-											width="400"></a>
-									<h2><a href="rooms.html">PREMIUN</a></h2>
-									<p>
-										Pensada para quienes buscan un plus de confort.
-										La habitación premium ofrece mayor espacio, cama king size, ropa de cama de
-										calidad superior
-									</p>
+									<a href="reservar.html"><img src="images/deluxe.jpg" alt="Habitación Premium"></a>
+									<div class="room-info">
+										<h2>PREMIUM</h2>
+										<p>
+											Pensada para quienes buscan un plus de confort. La habitación premium ofrece
+											mayor espacio,
+											cama king size, ropa de cama de calidad superior, minibar y una excelente
+											vista panorámica.
+										</p>
+										<a href="reservar.html" class="btn-reservar-room">¡Reserva esta habitación!</a>
+									</div>
 								</li>
+
 								<li>
-									<a href="rooms.html"><img src="images/habsuite.webp" alt="Img" height="250"
-											width="400"></a>
-									<h2><a href="rooms.html">EJECUTIVA</a></h2>
-									<p>
-										Diseñada para viajeros de negocios o huéspedes que necesitan comodidad y
-										productividad.
-										La habitación ejecutiva incluye cama king size o queen
-									</p>
+									<a href="reservar.html"><img src="images/habsuite.webp"
+											alt="Habitación Ejecutiva"></a>
+									<div class="room-info">
+										<h2>EJECUTIVA</h2>
+										<p>
+											Diseñada para viajeros de negocios o huéspedes que necesitan la máxima
+											productividad y confort.
+											Incluye cama king size, escritorio de trabajo ergonómico y acceso a internet
+											de alta velocidad.
+										</p>
+										<a href="reservar.html" class="btn-reservar-room">¡Reserva esta habitación!</a>
+									</div>
 								</li>
 							</ul>
 						</div>
@@ -79,31 +171,25 @@
 				</div>
 			</div>
 		</div>
+
 		<div id="footer">
 			<div>
 				<ul class="navigation">
-					<li>
-						<a href="index.html">INICIO</a>
-					</li>
-					<li>
-						<a href="about.html">SERVICIOS</a>
-					</li>
-					<li class="active">
-						<a href="habitaciones.html">HABITACIONES</a>
-					</li>
-					<li>
-						<a href="foods.html">RESERVACIONES</a>
-					</li>
-					<li>
-						<a href="contact.html">CONTACTO</a>
-					</li>
-					<li>
-						<a href="admin.html">RECEPCIÓN</a>
-					</li>
+					<li><a href="index.html">INICIO</a></li>
+					<li><a href="about.html">SERVICIOS</a></li>
+					<li class="active"><a href="habitaciones.html">HABITACIONES</a></li>
+					<li><a href="reservar.html">RESERVAR</a></li>
+					<li><a href="misreservas.html">MIS RESERVAS</a></li>
+					<li><a href="admin.html">RECEPCIÓN</a></li>
 				</ul>
+				<div id="connect">
+					<a href="#" class="facebook"></a>
+					<a href="#" class="twitter"></a>
+					<a href="#" class="googleplus"></a>
+				</div>
 			</div>
 			<p>
-				© 2026 Derechos reservados.
+				© 2026 Hotel Paraíso. Derechos reservados.
 			</p>
 		</div>
 	</div>

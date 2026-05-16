@@ -3,124 +3,173 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>Gestionar Mis Reservas - Hotel Paraiso</title>
+	<title>Gestionar Mis Reservas - Hotel Paraíso</title>
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 	<link rel="stylesheet" href="css/style.css" type="text/css">
 	<link rel="stylesheet" href="css/estilo.css" type="text/css">
 	<style>
+		/* Estilos del Portal de Autogestión */
+		.portal-header {
+			text-align: center;
+			margin-bottom: 25px;
+		}
+
+		.portal-header h1 {
+			color: #004d40;
+			margin-bottom: 10px;
+			border-bottom: none;
+		}
+
+		.portal-header p {
+			color: #666;
+			font-size: 0.95em;
+		}
+
 		.search-section {
 			background: #ffffff;
-			padding: 25px;
+			padding: 30px;
 			border-radius: 8px;
-			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-			max-width: 600px;
-			margin: 20px auto;
+			box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+			max-width: 500px;
+			margin: 0 auto 30px auto;
+			text-align: center;
+			border-top: 5px solid #00695c;
+		}
+
+		.search-section label {
+			display: block;
+			font-weight: bold;
+			color: #333;
+			margin-bottom: 15px;
+			font-size: 1.1em;
 		}
 
 		.search-section input[type="email"] {
-			width: 70%;
-			padding: 10px;
+			width: 80%;
+			padding: 12px;
 			border: 1px solid #ccc;
-			border-radius: 4px;
+			border-radius: 5px;
+			font-size: 1em;
+			margin-bottom: 15px;
+			box-sizing: border-box;
+			background-color: #fcfcfc;
+		}
+
+		.search-section input[type="email"]:focus {
+			border-color: #00695c;
+			outline: none;
+			background-color: #ffffff;
 		}
 
 		.search-section button {
-			padding: 10px 20px;
+			padding: 12px 25px;
 			background: #00695c;
 			color: white;
 			border: none;
-			border-radius: 4px;
+			border-radius: 5px;
 			cursor: pointer;
 			font-weight: bold;
+			font-size: 1em;
+			transition: background 0.3s;
 		}
 
+		.search-section button:hover {
+			background: #004d40;
+		}
+
+		/* Estilos de las Tarjetas de Reservación */
 		.reserva-card {
 			background: #ffffff;
 			border-left: 5px solid #00695c;
 			padding: 20px;
-			margin-top: 20px;
+			margin-bottom: 20px;
 			border-radius: 6px;
-			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+			box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
+			flex-wrap: wrap;
+			gap: 15px;
 		}
 
 		.info-reserva p {
-			margin: 6px 0;
-			color: #333;
+			margin: 8px 0;
+			color: #444;
+			font-size: 0.95em;
 		}
 
 		.badge-info {
 			background: #e0f2f1;
 			color: #004d40;
-			padding: 3px 8px;
+			padding: 4px 10px;
 			border-radius: 4px;
 			font-size: 0.9em;
 			font-weight: bold;
 		}
 
+		.botones-accion button {
+			padding: 10px 15px;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			font-weight: bold;
+			margin-left: 8px;
+			transition: opacity 0.3s;
+		}
+
+		.botones-accion button:hover {
+			opacity: 0.85;
+		}
+
 		.btn-edit {
 			background: #2980b9;
 			color: white;
-			border: none;
-			padding: 8px 14px;
-			border-radius: 4px;
-			cursor: pointer;
-			font-weight: bold;
 		}
 
 		.btn-del {
 			background: #c0392b;
 			color: white;
-			border: none;
-			padding: 8px 14px;
-			border-radius: 4px;
-			cursor: pointer;
-			font-weight: bold;
-			margin-left: 5px;
 		}
 
 		.btn-save {
 			background: #27ae60;
 			color: white;
-			border: none;
-			padding: 8px 14px;
-			border-radius: 4px;
-			cursor: pointer;
-			font-weight: bold;
 		}
 
 		.btn-cancel {
 			background: #7f8c8d;
 			color: white;
-			border: none;
-			padding: 8px 14px;
-			border-radius: 4px;
-			cursor: pointer;
-			font-weight: bold;
-			margin-left: 5px;
 		}
 
+		/* Estilos del formulario de edición en línea */
 		.inputs-edicion {
 			display: flex;
-			gap: 15px;
-			margin-top: 10px;
-			background: #f2f4f4;
-			padding: 10px;
-			border-radius: 4px;
+			gap: 20px;
+			margin-top: 15px;
+			background: #f4f7f6;
+			padding: 15px;
+			border-radius: 6px;
+			border: 1px solid #e0e0e0;
+		}
+
+		.inputs-edicion div {
+			flex: 1;
 		}
 
 		.inputs-edicion label {
-			font-size: 0.85em;
+			font-size: 0.9em;
 			font-weight: bold;
 			color: #555;
+			display: block;
+			margin-bottom: 5px;
 		}
 
 		.inputs-edicion input {
-			padding: 4px 8px;
+			width: 100%;
+			padding: 8px;
 			border: 1px solid #ccc;
 			border-radius: 4px;
+			box-sizing: border-box;
 		}
 	</style>
 </head>
@@ -135,10 +184,10 @@
 				<div id="navigation">
 					<ul>
 						<li><a href="index.html">INICIO</a></li>
-						<li><a href="about.html">SERVICIO</a></li>
+						<li><a href="about.html">SERVICIOS</a></li>
 						<li><a href="habitaciones.html">HABITACIONES</a></li>
-						<li><a href="foods.html">RESERVACIONES</a></li>
-						<li class="selected"><a href="contact.html">MIS RESERVAS</a></li>
+						<li><a href="reservar.html">RESERVAR</a></li>
+						<li class="selected"><a href="misreservas.html">MIS RESERVAS</a></li>
 						<li><a href="admin.html">RECEPCIÓN</a></li>
 					</ul>
 				</div>
@@ -147,75 +196,100 @@
 			<div id="contents">
 				<div class="box">
 					<div class="body">
-						<h1 style="text-align: center;">PORTAL DE AUTOGESTIÓN DE CLIENTES</h1>
-						<p style="text-align: center;">Introduce tu dirección de correo electrónico para consultar,
-							rectificar fechas o cancelar tus reservaciones vigentes de forma inmediata.</p>
 
-						<div class="search-section">
-							<label for="clientEmail"><b>Correo Electrónico Registrado:</b></label><br><br>
-							<input type="email" id="clientEmail" placeholder="ejemplo@correo.com" required>
-							<button onclick="buscarReservas()">Buscar</button>
+						<div class="portal-header">
+							<h1>PORTAL DE AUTOGESTIÓN</h1>
+							<p>Consulta, modifica las fechas o cancela tus reservaciones vigentes de forma inmediata.
+							</p>
 						</div>
 
-						<div id="resultados-reservas" style="max-width: 800px; margin: 30px auto;"></div>
+						<div class="search-section">
+							<label for="clientEmail">Correo Electrónico Registrado:</label>
+							<input type="email" id="clientEmail" placeholder="ejemplo@correo.com" required>
+							<br>
+							<button onclick="buscarReservas()">Buscar Mis Reservas</button>
+						</div>
+
+						<div id="resultados-reservas" style="max-width: 850px; margin: 0 auto;"></div>
+
 					</div>
 				</div>
 			</div>
 		</div>
+
 		<div id="footer">
-			<p>© 2026 Sistema de Autogestión - Hotel Paraíso.</p>
+			<div>
+				<ul class="navigation">
+					<li><a href="index.html">INICIO</a></li>
+					<li><a href="about.html">SERVICIOS</a></li>
+					<li><a href="habitaciones.html">HABITACIONES</a></li>
+					<li><a href="reservar.html">RESERVAR</a></li>
+					<li class="active"><a href="misreservas.html">MIS RESERVAS</a></li>
+					<li><a href="admin.html">RECEPCIÓN</a></li>
+				</ul>
+			</div>
+			<p>© 2026 Hotel Paraíso. Derechos reservados.</p>
 		</div>
 	</div>
 
 	<script>
 		async function buscarReservas() {
-			const correo = document.getElementById('clientEmail').value;
+			const correo = document.getElementById('clientEmail').value.trim();
 			const contenedor = document.getElementById('resultados-reservas');
-			if (!correo) { alert("Por favor, introduce tu correo electrónico."); return; }
+			if (!correo) {
+				alert("Por favor, introduce tu correo electrónico.");
+				return;
+			}
 
-			contenedor.innerHTML = "<p style='text-align:center;'>Consultando base de datos en SQL Server...</p>";
+			contenedor.innerHTML = "<p style='text-align:center; color: #555;'>Consultando base de datos en SQL Server...</p>";
 
 			try {
 				const res = await fetch(`procesar_cliente.php?accion=buscar&correo=${correo}`);
 				const datos = await res.json();
 
 				if (datos.length === 0 || datos.Error) {
-					contenedor.innerHTML = "<p style='text-align:center; color: #c0392b; font-weight:bold;'>No se detectaron reservaciones activas vinculadas a este correo electrónico.</p>";
+					contenedor.innerHTML = `
+                        <div style="background: #ffebee; padding: 15px; border-radius: 5px; text-align: center; color: #c62828; border: 1px solid #ffcdd2;">
+                            <b>No se detectaron reservaciones activas vinculadas a este correo electrónico.</b>
+                        </div>`;
 					return;
 				}
 
-				let html = "<h3>Tus Reservaciones Encontradas:</h3>";
+				let html = "<h2 style='color:#004d40; border-bottom: 2px solid #e0f2f1; padding-bottom:10px;'>Tus Reservaciones Encontradas:</h2>";
+
 				datos.forEach(r => {
 					html += `
                         <div class="reserva-card" id="card-${r.ID_Reservacion}">
-                            <div class="info-reserva" id="view-${r.ID_Reservacion}">
-                                <p><b>ID Reserva:</b> <span class="badge-info">#${r.ID_Reservacion}</span> | <b>Habitación asignada:</b> ${r.Numero_Habitacion}</p>
-                                <p><b>Categoría de Habitación:</b> ${r.Tipo}</p>
-                                <p><b>Periodo de Estancia:</b> Del <span style="color:#00695c; font-weight:bold;">${r.Fecha_Llegada}</span> al <span style="color:#00695c; font-weight:bold;">${r.Fecha_Salida}</span></p>
-                                <p><b>Monto Total Neto:</b> <span style="color:#27ae60; font-weight:bold;">$${r.Monto_Total} MXN</span></p>
+                            
+                            <div class="info-reserva" id="view-${r.ID_Reservacion}" style="flex: 1;">
+                                <p><b>ID Reserva:</b> <span class="badge-info">#${r.ID_Reservacion}</span> &nbsp;|&nbsp; <b>Habitación:</b> ${r.Numero_Habitacion} (${r.Tipo})</p>
+                                <p><b>Estancia:</b> Del <span style="color:#00695c; font-weight:bold;">${r.Fecha_Llegada}</span> al <span style="color:#00695c; font-weight:bold;">${r.Fecha_Salida}</span></p>
+                                <p><b>Total Neto:</b> <span style="color:#27ae60; font-weight:bold; font-size:1.1em;">$${r.Monto_Total} MXN</span></p>
                             </div>
 
-                            <div class="info-reserva" id="edit-form-${r.ID_Reservacion}" style="display:none;">
-                                <p><b>Modificando Reserva: #${r.ID_Reservacion}</b></p>
+                            <div class="info-reserva" id="edit-form-${r.ID_Reservacion}" style="display:none; flex: 1;">
+                                <p><b>Modificando Reserva: <span class="badge-info">#${r.ID_Reservacion}</span></b></p>
                                 <div class="inputs-edicion">
                                     <div>
-                                        <label>Nueva Entrada:</label><br>
+                                        <label>Nueva Entrada:</label>
                                         <input type="date" id="input-in-${r.ID_Reservacion}" value="${r.Fecha_Llegada}">
                                     </div>
                                     <div>
-                                        <label>Nueva Salida:</label><br>
+                                        <label>Nueva Salida:</label>
                                         <input type="date" id="input-out-${r.ID_Reservacion}" value="${r.Fecha_Salida}">
                                     </div>
                                 </div>
-                                <p style="font-size:0.85em; color:#7f8c8d; margin-top:5px;">* El costo total se recalculará automáticamente según las nuevas noches reservadas.</p>
+                                <p style="font-size:0.85em; color:#7f8c8d; margin-top:10px;">
+                                    * El costo se recalculará automáticamente según las nuevas fechas.
+                                </p>
                             </div>
 
-                            <div id="actions-${r.ID_Reservacion}">
-                                <button class="btn-edit" onclick="activarModoEdicion(${r.ID_Reservacion})">Editar</button>
-                                <button class="btn-del" onclick="eliminarReserva(${r.ID_Reservacion})">Cancelar</button>
+                            <div class="botones-accion" id="actions-${r.ID_Reservacion}">
+                                <button class="btn-edit" onclick="activarModoEdicion(${r.ID_Reservacion})">Reprogramar</button>
+                                <button class="btn-del" onclick="eliminarReserva(${r.ID_Reservacion})">Cancelar Reserva</button>
                             </div>
 
-                            <div id="actions-edit-${r.ID_Reservacion}" style="display:none;">
+                            <div class="botones-accion" id="actions-edit-${r.ID_Reservacion}" style="display:none;">
                                 <button class="btn-save" onclick="guardarCambiosEdicion(${r.ID_Reservacion}, '${r.Tipo}')">Guardar</button>
                                 <button class="btn-cancel" onclick="cancelarModoEdicion(${r.ID_Reservacion})">Volver</button>
                             </div>
@@ -224,7 +298,7 @@
 				});
 				contenedor.innerHTML = html;
 			} catch (e) {
-				contenedor.innerHTML = "<p style='color:red; text-align:center;'>Error crítico de comunicación con el servidor.</p>";
+				contenedor.innerHTML = "<p style='color:red; text-align:center;'>Error crítico de comunicación con el servidor PHP.</p>";
 			}
 		}
 
@@ -246,7 +320,15 @@
 			const nuevaEntrada = document.getElementById(`input-in-${id}`).value;
 			const nuevaSalida = document.getElementById(`input-out-${id}`).value;
 
-			if (!nuevaEntrada || !nuevaSalida) { alert("Debes rellenar ambas fechas."); return; }
+			if (!nuevaEntrada || !nuevaSalida) {
+				alert("Debes rellenar ambas fechas.");
+				return;
+			}
+
+			if (new Date(nuevaEntrada) >= new Date(nuevaSalida)) {
+				alert("La fecha de salida debe ser posterior a la fecha de entrada.");
+				return;
+			}
 
 			const data = new FormData();
 			data.append("id", id);
@@ -260,7 +342,7 @@
 
 				if (respuesta.trim() === "ok") {
 					alert("Las fechas se han reprogramado correctamente y el precio fue recalculado.");
-					buscarReservas();
+					buscarReservas(); // Recarga la lista para mostrar los nuevos datos
 				} else {
 					alert("Error: Las nuevas fechas elegidas se cruzan con otra reservación existente o la habitación se encuentra en mantenimiento.");
 				}
@@ -270,17 +352,21 @@
 		}
 
 		async function eliminarReserva(id) {
-			if (!confirm("¿Estás completamente seguro de que deseas dar de baja y cancelar esta reservación?")) return;
+			if (!confirm("¿Estás completamente seguro de que deseas dar de baja y cancelar esta reservación de forma permanente?")) return;
+
 			try {
 				const res = await fetch(`procesar_cliente.php?accion=eliminar&id=${id}`);
 				const r = await res.text();
+
 				if (r.trim() === "ok") {
-					alert("La reservación ha sido cancelada.");
-					buscarReservas();
+					alert("La reservación ha sido cancelada exitosamente.");
+					buscarReservas(); // Recarga la lista para quitar la reserva cancelada
 				} else {
 					alert("Error al intentar procesar la cancelación en SQL Server.");
 				}
-			} catch (e) { alert("Error de red."); }
+			} catch (e) {
+				alert("Error de red.");
+			}
 		}
 	</script>
 </body>

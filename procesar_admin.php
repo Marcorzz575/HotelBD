@@ -1,36 +1,40 @@
 <?php
 // procesar_admin.php
+// 1. Cabeceras y seguridad para evitar que errores rompan el JavaScript
+error_reporting(0);
+header('Content-Type: text/plain; charset=utf-8');
 include 'conexion.php';
 
-$accion = $_POST['accion'] ?? '';
+$accion = trim($_POST['accion'] ?? '');
 
+// 2. Enrutador de operaciones de recepción
 switch ($accion) {
-    case 'checkin':
-        $id = $_POST['id_reserva'];
-        $stmt = sqlsrv_query($conn, "{call Sp_CheckIn(?)}", array($id));
-        echo $stmt ? "ok" : "error";
-        break;
-
-    case 'checkout':
-        $id = $_POST['id_reserva'];
-        $stmt = sqlsrv_query($conn, "{call Sp_Checkout_Validado(?)}", array($id));
-        echo $stmt ? "ok" : "error";
-        break;
-
     case 'limpieza':
-        $hab = $_POST['num_hab'];
+        // intval() asegura que absolutamente nadie pueda meter letras o código, solo números enteros
+        $hab = intval($_POST['num_hab'] ?? 0);
+
+        if ($hab <= 0) {
+            die("error"); // Detiene si la habitación es 0 o vacía
+        }
+
         $stmt = sqlsrv_query($conn, "{call Sp_FinalizarLimpieza(?)}", array($hab));
-        echo $stmt ? "ok" : "error";
+        echo ($stmt !== false) ? "ok" : "error";
         break;
 
     case 'mantenimiento':
-        $hab = $_POST['num_hab'];
-        $dias = $_POST['dias'];
+        $hab = intval($_POST['num_hab'] ?? 0);
+        $dias = intval($_POST['dias'] ?? 0);
+
+        if ($hab <= 0 || $dias <= 0) {
+            die("error"); // Detiene si meten números negativos o vacíos
+        }
+
         $stmt = sqlsrv_query($conn, "{call Sp_Mantenimiento(?, ?)}", array($hab, $dias));
-        echo $stmt ? "ok" : "error";
+        echo ($stmt !== false) ? "ok" : "error";
         break;
 
     default:
+        // Si mandan una acción fantasma (como los viejos checkin/checkout)
         echo "error_accion_desconocida";
         break;
 }

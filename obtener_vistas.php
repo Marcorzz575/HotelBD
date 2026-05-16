@@ -1,46 +1,60 @@
 <?php
 // obtener_vistas.php
-header('Content-Type: application/json');
+// 1. Configuraciones de seguridad para evitar que errores nativos rompan el JSON
+error_reporting(0);
+header('Content-Type: application/json; charset=utf-8');
 include 'conexion.php';
 
-$tipo_vista = $_GET['vista'] ?? '';
+$tipo_vista = trim($_GET['vista'] ?? '');
 $resultados = [];
+$sql = "";
 
-if ($tipo_vista == 'top_clientes') {
-    $sql = "SELECT * FROM Vista_Top_Clientes";
-    $stmt = sqlsrv_query($conn, $sql);
-    while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
-        $resultados[] = $row;
-    }
-    echo json_encode($resultados);
+// 2. Sistema de Enrutamiento (Switch)
+switch ($tipo_vista) {
+    case 'top_clientes':
+        $sql = "SELECT * FROM Vista_Top_Clientes";
+        break;
 
-} else if ($tipo_vista == 'ingresos_tipo') {
-    $sql = "SELECT * FROM Vista_Ingresos_Por_Tipo";
-    $stmt = sqlsrv_query($conn, $sql);
-    while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
-        $resultados[] = $row;
-    }
-    echo json_encode($resultados);
+    case 'ingresos_tipo':
+        $sql = "SELECT * FROM Vista_Ingresos_Por_Tipo";
+        break;
 
-} else if ($tipo_vista == 'huespedes_activos') {
-    // 👇 Nueva condicional para llamar a tu vista de SQL Server
-    $sql = "SELECT * FROM Vista_Huespedes_Activos";
-    $stmt = sqlsrv_query($conn, $sql);
-    while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
-        $resultados[] = $row;
-    }
-    echo json_encode($resultados);
+    case 'huespedes_activos':
+        $sql = "SELECT * FROM Vista_Huespedes_Activos";
+        break;
 
-} else if ($tipo_vista == 'excel') {
-    // Llama al procedimiento que usa BCP para generar el CSV físico en C:\Reportes
-    $stmt = sqlsrv_query($conn, "{call Sp_Reporte_Excel}");
-    if ($stmt) {
-        // Se añade doble barra (\\) para evitar problemas de escape en PHP
-        echo json_encode([["Mensaje" => "Reporte generado exitosamente en C:\\PIA\\Reporte"]]);
-    } else {
-        echo json_encode([["Mensaje" => "Error al generar el reporte"]]);
-    }
-} else {
-    echo json_encode([["Error" => "Proceso no encontrado"]]);
+    case 'excel':
+        // El reporte de Excel tiene un trato especial porque no devuelve una tabla, sino que ejecuta BCP
+        $stmt = sqlsrv_query($conn, "{call Sp_Reporte_Excel}");
+        if ($stmt) {
+            echo json_encode([["Mensaje" => "Reporte generado exitosamente en C:\\PIA\\Reporte"]]);
+        } else {
+            echo json_encode([["Error" => "Error de SQL Server al intentar generar el archivo físico."]]);
+        }
+        exit; // Terminamos la ejecución para que no intente hacer el bloque de abajo
+
+    default:
+        // Si alguien intenta mandar un parámetro manipulado por la URL, lo bloqueamos
+        echo json_encode([["Error" => "Proceso no autorizado o vista inexistente."]]);
+        exit;
 }
+
+// =========================================================================
+// 3. EJECUCIÓN CENTRALIZADA PARA LAS VISTAS
+// =========================================================================
+$stmt = sqlsrv_query($conn, $sql);
+
+if ($stmt === false) {
+    // Si la vista falla (ej. borraste la vista en SQL por error), devolvemos un JSON de error
+    echo json_encode([["Error" => "No se pudo extraer la información de la base de datos."]]);
+    exit;
+}
+
+// Llenado dinámico del arreglo
+while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+    $resultados[] = $row;
+}
+
+// Devolvemos la tabla completa en JSON
+echo json_encode($resultados);
 ?>

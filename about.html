@@ -1,10 +1,39 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 
 <head>
 	<meta charset="UTF-8">
-	<title>Servicios - que ofrecemos</title>
+	<title>HOTEL PARAÍSO - SERVICIOS</title>
 	<link rel="stylesheet" href="css/style.css" type="text/css">
+	<link rel="stylesheet" href="css/estilo.css" type="text/css">
+	<style>
+		/* Pequeños ajustes para que las imágenes y textos de servicios se vean espectaculares */
+		.servicio-seccion {
+			margin-bottom: 40px;
+		}
+
+		.servicio-seccion h2 {
+			color: #00695c;
+			border-bottom: 2px solid #e0f2f1;
+			padding-bottom: 10px;
+			margin-bottom: 15px;
+		}
+
+		.servicio-seccion img {
+			width: 100%;
+			max-width: 800px;
+			border-radius: 8px;
+			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+			margin-bottom: 15px;
+		}
+
+		.servicio-seccion p {
+			font-size: 1.05em;
+			line-height: 1.6;
+			color: #444;
+			text-align: justify;
+		}
+	</style>
 </head>
 
 <body>
@@ -20,16 +49,16 @@
 							<a href="index.html">INICIO</a>
 						</li>
 						<li class="selected">
-							<a href="about.html">SERVICIO</a>
+							<a href="about.html">SERVICIOS</a>
 						</li>
 						<li>
 							<a href="habitaciones.html">HABITACIONES</a>
 						</li>
 						<li>
-							<a href="foods.html">RESERVACIONES</a>
+							<a href="reservar.html">RESERVAR</a>
 						</li>
 						<li>
-							<a href="contact.html">CONTACTO</a>
+							<a href="misreservas.html">MIS RESERVAS</a>
 						</li>
 						<li>
 							<a href="admin.html">RECEPCIÓN</a>
@@ -37,74 +66,78 @@
 					</ul>
 				</div>
 			</div>
+
 			<div id="contents">
 				<div class="box">
 					<div>
 						<div class="body">
-							<h1>GYM</h1>
-							<p>
-								<img src="images/gym.jpg" alt="Img">
-							</p>
-							<p>
-								El hotel cuenta con un gimnasio moderno y completamente equipado, diseñado para que los
-								huéspedes puedan mantener su rutina de ejercicio durante su estancia.
-								Ubicado en una zona tranquila del hotel, el gimnasio ofrece un ambiente cómodo,
-								climatizado y con iluminación natural.
-							</p>
-							<hr>
-							<div class="ads">
-								<h2>Cancha</h2>
+							<h1 style="text-align: center; margin-bottom: 30px; color: #004d40;">LO QUE OFRECEMOS</h1>
+
+							<div class="servicio-seccion">
+								<h2>Gimnasio Moderno</h2>
+								<img src="images/gym.jpg" alt="Gimnasio del Hotel">
 								<p>
-									El hotel ofrece una cancha de tenis al aire libre en perfecto estado,
-									ideal tanto para jugadores principiantes como para huéspedes experimentados. El
-									terreno cuenta con superficie profesional,
-									iluminación nocturna y señalización reglamentaria.
-								</p>
-								<h2>SPA</h2>
-								<p>
-									El spa del hotel es un espacio de relajación diseñado para renovar cuerpo y mente.
-									Cuenta con cabinas privadas para masajes, sauna, baño de vapor, jacuzzi y área
-									lounge con aromaterapia y música ambiental.
+									El hotel cuenta con un gimnasio moderno y completamente equipado, diseñado para que
+									nuestros
+									huéspedes puedan mantener su rutina de ejercicio durante su estancia. Ubicado en una
+									zona tranquila del hotel,
+									ofrece un ambiente cómodo, climatizado y con excelente iluminación natural.
 								</p>
 							</div>
-							<h2>Cancha de tenis</h2>
-							<p>
-								<img src="images/tenis.jpg" alt="Img">
-							</p>
-							<h2>SPA</h2>
-							<p>
-								<img src="images/spa.jpg" alt="Img">
-							</p>
+
+							<hr style="border: 0; border-top: 1px dashed #ccc; margin: 30px 0;">
+
+							<div class="servicio-seccion">
+								<h2>Cancha de Tenis</h2>
+								<img src="images/tenis.jpg" alt="Cancha de Tenis">
+								<p>
+									Ofrecemos una cancha de tenis al aire libre en perfecto estado, ideal tanto para
+									jugadores principiantes
+									como para huéspedes experimentados. El terreno cuenta con superficie profesional,
+									iluminación nocturna para
+									partidos vespertinos y señalización reglamentaria.
+								</p>
+							</div>
+
+							<hr style="border: 0; border-top: 1px dashed #ccc; margin: 30px 0;">
+
+							<div class="servicio-seccion">
+								<h2>SPA y Relajación</h2>
+								<img src="images/spa.jpg" alt="Servicios de SPA">
+								<p>
+									El spa del hotel es un espacio de relajación absoluta, diseñado exclusivamente para
+									renovar cuerpo y mente.
+									Cuenta con cabinas privadas para masajes terapéuticos, sauna, baño de vapor, jacuzzi
+									y un área lounge
+									donde podrás disfrutar de aromaterapia y música ambiental de primer nivel.
+								</p>
+							</div>
+
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+
 		<div id="footer">
 			<div>
 				<ul class="navigation">
-					<li>
-						<a href="index.html">INICIO</a>
-					</li>
-					<li class="active">
-						<a href="about.html">SERVICIOS</a>
-					</li>
-					<li>
-						<a href="habitaciones.html">HABITACIONES</a>
-					</li>
-					<li>
-						<a href="foods.html">RESERVACIONES</a>
-					</li>
-					<li>
-						<a href="contact.html">CONTACTO</a>
-					</li>
-					<li>
-						<a href="admin.html">RECEPCIÓN</a>
-					</li>
+					<li><a href="index.html">INICIO</a></li>
+					<li class="active"><a href="about.html">SERVICIOS</a></li>
+					<li><a href="habitaciones.html">HABITACIONES</a></li>
+					<li><a href="reservar.html">RESERVAR</a></li>
+					<li><a href="misreservas.html">MIS RESERVAS</a></li>
+					<li><a href="admin.html">RECEPCIÓN</a></li>
 				</ul>
+
+				<div id="connect">
+					<a href="#" class="facebook"></a>
+					<a href="#" class="twitter"></a>
+					<a href="#" class="googleplus"></a>
+				</div>
 			</div>
 			<p>
-				© 2026 Derechos reservados.
+				© 2026 Hotel Paraíso. Derechos reservados.
 			</p>
 		</div>
 	</div>

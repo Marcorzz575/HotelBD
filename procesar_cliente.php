@@ -1,75 +1,127 @@
 <?php
 // procesar_cliente.php
+
+// 1. Apagamos errores visuales de PHP para no romper la respuesta al Frontend
+error_reporting(0);
 include 'conexion.php';
 
-$accion = $_GET['accion'] ?? '';
+// Capturamos la acción (puede venir por GET o por POST)
+$accion = trim($_GET['accion'] ?? $_POST['accion'] ?? '');
 
-if ($accion === 'buscar') {
-    $correo = $_GET['correo'] ?? '';
-    // CORRECCIÓN CRÍTICA: Se usa CONVERT para evitar el error de [object Object] en el Frontend
-    $sql = "SELECT R.ID_Reservacion, R.Numero_Habitacion, T.Tipo, 
-                   CONVERT(VARCHAR, R.Fecha_Llegada, 23) AS Fecha_Llegada, 
-                   CONVERT(VARCHAR, R.Fecha_Salida, 23) AS Fecha_Salida, 
-                   R.Monto_Total 
-            FROM Reservaciones R
-            INNER JOIN Huespedes H ON R.ID_Huesped = H.ID_Huesped
-            INNER JOIN Habitaciones Ha ON R.Numero_Habitacion = Ha.Numero_Habitacion
-            INNER JOIN Tipos_Habitacion T ON Ha.ID_Tipo = T.ID_Tipo
-            WHERE H.Correo = ? AND R.Estado_Reserva = 'Activa'";
+// 2. Sistema de Enrutamiento
+switch ($accion) {
 
-    $stmt = sqlsrv_query($conn, $sql, array($correo));
-    $res = [];
-    if ($stmt) {
-        while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
-            $res[] = $row;
+    // ========================================================
+    // A) BUSCAR RESERVACIONES (Devuelve JSON)
+    // ========================================================
+    case 'buscar':
+        header('Content-Type: application/json; charset=utf-8');
+        $correo = trim($_GET['correo'] ?? '');
+
+        if (empty($correo)) {
+            echo json_encode(["Error" => "Correo vacío"]);
+            exit;
         }
-    }
-    echo json_encode($res);
-    exit;
-}
 
-if ($accion === 'eliminar') {
-    $id = $_GET['id'] ?? '';
-    $sql = "UPDATE Reservaciones SET Estado_Reserva = 'Cancelada' WHERE ID_Reservacion = ?";
-    $stmt = sqlsrv_query($conn, $sql, array($id));
-    echo ($stmt) ? "ok" : "error";
-    exit;
-}
+        $sql = "SELECT R.ID_Reservacion, R.Numero_Habitacion, T.Tipo, 
+                       CONVERT(VARCHAR, R.Fecha_Llegada, 23) AS Fecha_Llegada, 
+                       CONVERT(VARCHAR, R.Fecha_Salida, 23) AS Fecha_Salida, 
+                       R.Monto_Total 
+                FROM Reservaciones R
+                INNER JOIN Huespedes H ON R.ID_Huesped = H.ID_Huesped
+                INNER JOIN Habitaciones Ha ON R.Numero_Habitacion = Ha.Numero_Habitacion
+                INNER JOIN Tipos_Habitacion T ON Ha.ID_Tipo = T.ID_Tipo
+                WHERE H.Correo = ? AND R.Estado_Reserva = 'Activa'";
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && $accion === 'editar') {
-    $id = $_POST['id'] ?? '';
-    $entrada = $_POST['entrada'] ?? '';
-    $salida = $_POST['salida'] ?? '';
-    $tipo_hab = $_POST['tipo'] ?? '';
+        $stmt = sqlsrv_query($conn, $sql, array($correo));
+        $res = [];
 
-    $dias = (strtotime($salida) - strtotime($entrada)) / 86400;
-    if ($dias <= 0) {
-        die("error_fechas");
-    }
+        if ($stmt) {
+            while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+                $res[] = $row;
+            }
+        }
+        echo json_encode($res);
+        break;
 
-    $precios = ["Estandar" => 1500, "Premium" => 2500, "Ejecutiva" => 4000];
-    $precio_unidad = $precios[$tipo_hab] ?? 1500;
-    $nuevo_monto = $dias * $precio_unidad;
+    // ========================================================
+    // B) CANCELAR RESERVACIÓN (Devuelve Texto)
+    // ========================================================
+    case 'eliminar':
+        header('Content-Type: text/plain; charset=utf-8');
 
-    // Validación anti-cruces y anti-mantenimiento antes de modificar
-    $sql_check = "
-        SELECT 1 FROM Reservaciones R
-        INNER JOIN Habitaciones H ON R.Numero_Habitacion = H.Numero_Habitacion
-        WHERE R.Numero_Habitacion = (SELECT Numero_Habitacion FROM Reservaciones WHERE ID_Reservacion = ?)
-          AND R.ID_Reservacion <> ?
-          AND R.Estado_Reserva = 'Activa'
-          AND (? < R.Fecha_Salida AND ? > R.Fecha_Llegada)";
+        // Seguridad: Forzamos a que el ID sea un número entero
+        $id = intval($_GET['id'] ?? 0);
+        if ($id <= 0) {
+            die("error");
+        }
 
-    $stmt_check = sqlsrv_query($conn, $sql_check, array($id, $id, $entrada, $salida));
+        $sql = "UPDATE Reservaciones SET Estado_Reserva = 'Cancelada' WHERE ID_Reservacion = ?";
+        $stmt = sqlsrv_query($conn, $sql, array($id));
 
-    if ($stmt_check && sqlsrv_has_rows($stmt_check)) {
-        die("error_cruce");
-    }
+        echo ($stmt !== false) ? "ok" : "error";
+        break;
 
-    // Actualización de datos
-    $sql_update = "UPDATE Reservaciones SET Fecha_Llegada = ?, Fecha_Salida = ?, Monto_Total = ? WHERE ID_Reservacion = ?";
-    $stmt_update = sqlsrv_query($conn, $sql_update, array($entrada, $salida, $nuevo_monto, $id));
-    echo ($stmt_update) ? "ok" : "error";
-    exit;
+    // ========================================================
+    // C) EDITAR FECHAS DE RESERVACIÓN (Devuelve Texto)
+    // ========================================================
+    case 'editar':
+        header('Content-Type: text/plain; charset=utf-8');
+
+        // Validamos que la petición sea estrictamente por formulario (POST)
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            die("error_metodo");
+        }
+
+        $id = intval($_POST['id'] ?? 0);
+        $entrada = $_POST['entrada'] ?? '';
+        $salida = $_POST['salida'] ?? '';
+        $tipo_hab = trim($_POST['tipo'] ?? '');
+
+        if ($id <= 0 || empty($entrada) || empty($salida)) {
+            die("error_datos_incompletos");
+        }
+
+        $dias = (strtotime($salida) - strtotime($entrada)) / 86400;
+        if ($dias <= 0) {
+            die("error_fechas");
+        }
+
+        // Seguridad: Verificamos que el tipo de habitación no haya sido alterado
+        $precios = ["Estandar" => 1500, "Premium" => 2500, "Ejecutiva" => 4000];
+        if (!array_key_exists($tipo_hab, $precios)) {
+            die("error_tipo_habitacion");
+        }
+
+        $nuevo_monto = $dias * $precios[$tipo_hab];
+
+        // Validación anti-cruces
+        $sql_check = "
+            SELECT 1 FROM Reservaciones R
+            INNER JOIN Habitaciones H ON R.Numero_Habitacion = H.Numero_Habitacion
+            WHERE R.Numero_Habitacion = (SELECT Numero_Habitacion FROM Reservaciones WHERE ID_Reservacion = ?)
+              AND R.ID_Reservacion <> ?
+              AND R.Estado_Reserva = 'Activa'
+              AND (? < R.Fecha_Salida AND ? > R.Fecha_Llegada)";
+
+        $stmt_check = sqlsrv_query($conn, $sql_check, array($id, $id, $entrada, $salida));
+
+        if ($stmt_check && sqlsrv_has_rows($stmt_check)) {
+            die("error_cruce");
+        }
+
+        // Actualización de datos
+        $sql_update = "UPDATE Reservaciones SET Fecha_Llegada = ?, Fecha_Salida = ?, Monto_Total = ? WHERE ID_Reservacion = ?";
+        $stmt_update = sqlsrv_query($conn, $sql_update, array($entrada, $salida, $nuevo_monto, $id));
+
+        echo ($stmt_update !== false) ? "ok" : "error";
+        break;
+
+    // ========================================================
+    // CASO POR DEFECTO (Seguridad extra)
+    // ========================================================
+    default:
+        echo "error_accion_desconocida";
+        break;
 }
 ?>
