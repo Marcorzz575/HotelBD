@@ -21,9 +21,10 @@ switch ($tipo_vista) {
         $sql = "SELECT * FROM Vista_Huespedes_Activos";
         break;
 
-    // 👇 NUEVO CASO ADICIONADO PARA EL TABLERO DE OCUPACIÓN 👇
+    // 👇 CASO CORREGIDO PARA EL TABLERO DE OCUPACIÓN 👇
     case 'todas_activas':
-        $sql = "SELECT * FROM Vista_Reservas_Activas ORDER BY Fecha_Llegada ASC";
+        // Ordenamos usando el nombre exacto de la columna en la vista SQL ([Check-In])
+        $sql = "SELECT * FROM Vista_Reservas_Activas ORDER BY [Check-In] ASC";
         break;
 
     case 'excel':
@@ -44,6 +45,7 @@ switch ($tipo_vista) {
 $stmt = sqlsrv_query($conn, $sql);
 
 if ($stmt === false) {
+    // Si la consulta falla, mostramos el error limpio sin romper la web
     echo json_encode([["Error" => "No se pudo extraer la información de la base de datos."]]);
     exit;
 }
