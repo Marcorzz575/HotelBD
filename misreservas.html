@@ -264,7 +264,14 @@
                             <div class="info-reserva" id="view-${r.ID_Reservacion}" style="flex: 1;">
                                 <p><b>ID Reserva:</b> <span class="badge-info">#${r.ID_Reservacion}</span> &nbsp;|&nbsp; <b>Habitación:</b> ${r.Numero_Habitacion} (${r.Tipo})</p>
                                 <p><b>Estancia:</b> Del <span style="color:#00695c; font-weight:bold;">${r.Fecha_Llegada}</span> al <span style="color:#00695c; font-weight:bold;">${r.Fecha_Salida}</span></p>
-                                <p><b>Total Neto:</b> <span style="color:#27ae60; font-weight:bold; font-size:1.1em;">$${r.Monto_Total} MXN</span></p>
+                                
+                                <p style="margin: 10px 0; font-size: 0.9em; color: #666; background: #f9f9f9; padding: 8px; border-radius: 4px;">
+                                    <b>Tarifa Base:</b> $${r.Monto_Original} MXN <br>
+                                    <b>Descuento Aplicado:</b> <span style="color: #c0392b; font-weight: bold;">-$${r.Descuento} MXN</span> <br>
+                                    <b>Razón de Tarifa:</b> <span style="color: #00695c; font-weight: bold;">${r.Motivo}</span>
+                                </p>
+                                
+                                <p><b>Total Neto:</b> <span style="color:#27ae60; font-weight:bold; font-size:1.2em;">$${r.Monto_Final} MXN</span></p>
                             </div>
 
                             <div class="info-reserva" id="edit-form-${r.ID_Reservacion}" style="display:none; flex: 1;">
@@ -342,7 +349,7 @@
 
 				if (respuesta.trim() === "ok") {
 					alert("Las fechas se han reprogramado correctamente y el precio fue recalculado.");
-					buscarReservas(); // Recarga la lista para mostrar los nuevos datos
+					buscarReservas();
 				} else {
 					alert("Error: Las nuevas fechas elegidas se cruzan con otra reservación existente o la habitación se encuentra en mantenimiento.");
 				}
@@ -360,7 +367,7 @@
 
 				if (r.trim() === "ok") {
 					alert("La reservación ha sido cancelada exitosamente.");
-					buscarReservas(); // Recarga la lista para quitar la reserva cancelada
+					buscarReservas();
 				} else {
 					alert("Error al intentar procesar la cancelación en SQL Server.");
 				}

@@ -12,7 +12,7 @@ $accion = trim($_GET['accion'] ?? $_POST['accion'] ?? '');
 switch ($accion) {
 
     // ========================================================
-    // A) BUSCAR RESERVACIONES (Devuelve JSON)
+    // A) BUSCAR RESERVACIONES (Llamando al SP con Descuentos)
     // ========================================================
     case 'buscar':
         header('Content-Type: application/json; charset=utf-8');
@@ -23,16 +23,8 @@ switch ($accion) {
             exit;
         }
 
-        $sql = "SELECT R.ID_Reservacion, R.Numero_Habitacion, T.Tipo, 
-                       CONVERT(VARCHAR, R.Fecha_Llegada, 23) AS Fecha_Llegada, 
-                       CONVERT(VARCHAR, R.Fecha_Salida, 23) AS Fecha_Salida, 
-                       R.Monto_Total 
-                FROM Reservaciones R
-                INNER JOIN Huespedes H ON R.ID_Huesped = H.ID_Huesped
-                INNER JOIN Habitaciones Ha ON R.Numero_Habitacion = Ha.Numero_Habitacion
-                INNER JOIN Tipos_Habitacion T ON Ha.ID_Tipo = T.ID_Tipo
-                WHERE H.Correo = ? AND R.Estado_Reserva = 'Activa'";
-
+        // Delegamos TODA la lógica compleja al procedimiento almacenado
+        $sql = "{call Sp_Consultar_Reservas_Cliente(?)}";
         $stmt = sqlsrv_query($conn, $sql, array($correo));
         $res = [];
 
