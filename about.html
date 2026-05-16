@@ -7,31 +7,79 @@
 	<link rel="stylesheet" href="css/style.css" type="text/css">
 	<link rel="stylesheet" href="css/estilo.css" type="text/css">
 	<style>
-		/* Pequeños ajustes para que las imágenes y textos de servicios se vean espectaculares */
+		/* Diseño moderno y adaptativo para Servicios */
 		.servicio-seccion {
-			margin-bottom: 40px;
+			display: flex;
+			align-items: center;
+			gap: 30px;
+			margin-bottom: 35px;
+			background: #ffffff;
+			padding: 25px;
+			border-radius: 10px;
+			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+			border: 1px solid #f0f0f0;
+			border-left: 5px solid #00695c;
 		}
 
-		.servicio-seccion h2 {
-			color: #00695c;
-			border-bottom: 2px solid #e0f2f1;
-			padding-bottom: 10px;
-			margin-bottom: 15px;
+		/* Hace que el segundo servicio (Tenis) tenga la imagen a la derecha para darle dinamismo */
+		.servicio-seccion:nth-child(even) {
+			flex-direction: row-reverse;
+			border-left: 1px solid #f0f0f0;
+			border-right: 5px solid #00695c;
 		}
 
 		.servicio-seccion img {
-			width: 100%;
-			max-width: 800px;
+			width: 350px;
+			/* Tamaño más pequeño y fijo para evitar que se pixelen */
+			height: 230px;
+			object-fit: cover;
 			border-radius: 8px;
-			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-			margin-bottom: 15px;
+			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+			flex-shrink: 0;
 		}
 
-		.servicio-seccion p {
+		.servicio-content {
+			flex: 1;
+		}
+
+		.servicio-content h2 {
+			color: #00695c;
+			border-bottom: 2px solid #e0f2f1;
+			padding-bottom: 8px;
+			margin-top: 0;
+			margin-bottom: 15px;
+			font-size: 1.6em;
+		}
+
+		.servicio-content p {
 			font-size: 1.05em;
-			line-height: 1.6;
-			color: #444;
+			line-height: 1.7;
+			color: #555;
 			text-align: justify;
+			margin: 0;
+		}
+
+		/* Diseño responsivo para celulares y pantallas pequeñas */
+		@media (max-width: 768px) {
+
+			.servicio-seccion,
+			.servicio-seccion:nth-child(even) {
+				flex-direction: column;
+				text-align: center;
+				border-left: 1px solid #f0f0f0 !important;
+				border-right: 1px solid #f0f0f0 !important;
+				border-top: 5px solid #00695c;
+			}
+
+			.servicio-seccion img {
+				width: 100%;
+				max-width: 400px;
+				height: auto;
+			}
+
+			.servicio-content p {
+				text-align: center;
+			}
 		}
 	</style>
 </head>
@@ -71,46 +119,48 @@
 				<div class="box">
 					<div>
 						<div class="body">
-							<h1 style="text-align: center; margin-bottom: 30px; color: #004d40;">LO QUE OFRECEMOS</h1>
+							<h1 style="text-align: center; margin-bottom: 40px; color: #004d40;">LO QUE OFRECEMOS</h1>
 
 							<div class="servicio-seccion">
-								<h2>Gimnasio Moderno</h2>
 								<img src="images/gym.jpg" alt="Gimnasio del Hotel">
-								<p>
-									El hotel cuenta con un gimnasio moderno y completamente equipado, diseñado para que
-									nuestros
-									huéspedes puedan mantener su rutina de ejercicio durante su estancia. Ubicado en una
-									zona tranquila del hotel,
-									ofrece un ambiente cómodo, climatizado y con excelente iluminación natural.
-								</p>
+								<div class="servicio-content">
+									<h2>Gimnasio Moderno</h2>
+									<p>
+										El hotel cuenta con un gimnasio moderno y completamente equipado, diseñado para
+										que
+										nuestros huéspedes puedan mantener su rutina de ejercicio durante su estancia.
+										Ubicado en una zona tranquila del hotel, ofrece un ambiente cómodo, climatizado
+										y con excelente iluminación natural.
+									</p>
+								</div>
 							</div>
 
-							<hr style="border: 0; border-top: 1px dashed #ccc; margin: 30px 0;">
-
 							<div class="servicio-seccion">
-								<h2>Cancha de Tenis</h2>
 								<img src="images/tenis.jpg" alt="Cancha de Tenis">
-								<p>
-									Ofrecemos una cancha de tenis al aire libre en perfecto estado, ideal tanto para
-									jugadores principiantes
-									como para huéspedes experimentados. El terreno cuenta con superficie profesional,
-									iluminación nocturna para
-									partidos vespertinos y señalización reglamentaria.
-								</p>
+								<div class="servicio-content">
+									<h2>Cancha de Tenis</h2>
+									<p>
+										Ofrecemos una cancha de tenis al aire libre en perfecto estado, ideal tanto para
+										jugadores principiantes como para huéspedes experimentados. El terreno cuenta
+										con superficie profesional,
+										iluminación nocturna para partidos vespertinos y señalización reglamentaria.
+									</p>
+								</div>
 							</div>
 
-							<hr style="border: 0; border-top: 1px dashed #ccc; margin: 30px 0;">
-
 							<div class="servicio-seccion">
-								<h2>SPA y Relajación</h2>
 								<img src="images/spa.jpg" alt="Servicios de SPA">
-								<p>
-									El spa del hotel es un espacio de relajación absoluta, diseñado exclusivamente para
-									renovar cuerpo y mente.
-									Cuenta con cabinas privadas para masajes terapéuticos, sauna, baño de vapor, jacuzzi
-									y un área lounge
-									donde podrás disfrutar de aromaterapia y música ambiental de primer nivel.
-								</p>
+								<div class="servicio-content">
+									<h2>SPA y Relajación</h2>
+									<p>
+										El spa del hotel es un espacio de relajación absoluta, diseñado exclusivamente
+										para
+										renovar cuerpo y mente. Cuenta con cabinas privadas para masajes terapéuticos,
+										sauna, baño de vapor, jacuzzi
+										y un área lounge donde podrás disfrutar de aromaterapia y música ambiental de
+										primer nivel.
+									</p>
+								</div>
 							</div>
 
 						</div>
