@@ -41,6 +41,6 @@ if ($tipo_vista == 'top_clientes') {
         echo json_encode([["Mensaje" => "Error al generar el reporte"]]);
     }
 } else {
-    echo json_encode([["Error" => "Vista no encontrada"]]);
+    echo json_encode([["Error" => "Proceso no encontrado"]]);
 }
 ?>

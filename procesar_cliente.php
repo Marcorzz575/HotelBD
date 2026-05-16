@@ -6,7 +6,11 @@ $accion = $_GET['accion'] ?? '';
 
 if ($accion === 'buscar') {
     $correo = $_GET['correo'] ?? '';
-    $sql = "SELECT R.ID_Reservacion, R.Numero_Habitacion, T.Tipo, R.Fecha_Llegada, R.Fecha_Salida, R.Monto_Total 
+    // CORRECCIÓN CRÍTICA: Se usa CONVERT para evitar el error de [object Object] en el Frontend
+    $sql = "SELECT R.ID_Reservacion, R.Numero_Habitacion, T.Tipo, 
+                   CONVERT(VARCHAR, R.Fecha_Llegada, 23) AS Fecha_Llegada, 
+                   CONVERT(VARCHAR, R.Fecha_Salida, 23) AS Fecha_Salida, 
+                   R.Monto_Total 
             FROM Reservaciones R
             INNER JOIN Huespedes H ON R.ID_Huesped = H.ID_Huesped
             INNER JOIN Habitaciones Ha ON R.Numero_Habitacion = Ha.Numero_Habitacion
@@ -15,8 +19,10 @@ if ($accion === 'buscar') {
 
     $stmt = sqlsrv_query($conn, $sql, array($correo));
     $res = [];
-    while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
-        $res[] = $row;
+    if ($stmt) {
+        while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+            $res[] = $row;
+        }
     }
     echo json_encode($res);
     exit;
@@ -24,7 +30,6 @@ if ($accion === 'buscar') {
 
 if ($accion === 'eliminar') {
     $id = $_GET['id'] ?? '';
-    // Baja lógica pasando el estado a Cancelada
     $sql = "UPDATE Reservaciones SET Estado_Reserva = 'Cancelada' WHERE ID_Reservacion = ?";
     $stmt = sqlsrv_query($conn, $sql, array($id));
     echo ($stmt) ? "ok" : "error";
@@ -57,11 +62,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $accion === 'editar') {
 
     $stmt_check = sqlsrv_query($conn, $sql_check, array($id, $id, $entrada, $salida));
 
-    if (sqlsrv_has_rows($stmt_check)) {
+    if ($stmt_check && sqlsrv_has_rows($stmt_check)) {
         die("error_cruce");
     }
 
-    // Si pasó los filtros, modificamos la reservación
+    // Actualización de datos
     $sql_update = "UPDATE Reservaciones SET Fecha_Llegada = ?, Fecha_Salida = ?, Monto_Total = ? WHERE ID_Reservacion = ?";
     $stmt_update = sqlsrv_query($conn, $sql_update, array($entrada, $salida, $nuevo_monto, $id));
     echo ($stmt_update) ? "ok" : "error";
