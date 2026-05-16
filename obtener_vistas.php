@@ -23,7 +23,7 @@ switch ($tipo_vista) {
 
     // 👇 NUEVO CASO ADICIONADO PARA EL TABLERO DE OCUPACIÓN 👇
     case 'todas_activas':
-        $sql = "SELECT * FROM Vista_Todas_Reservas_Activas ORDER BY Fecha_Llegada ASC";
+        $sql = "SELECT * FROM Vista_Reservas_Activas ORDER BY Fecha_Llegada ASC";
         break;
 
     case 'excel':
